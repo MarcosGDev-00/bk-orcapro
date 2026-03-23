@@ -2,25 +2,25 @@ import React from 'react';
 import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer';
 
 const styles = StyleSheet.create({
-  page: { padding: 40, fontFamily: 'Helvetica', fontSize: 10, color: '#18160F' },
-  header: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 40 },
-  logo: { width: 60, height: 60, objectFit: 'contain' },
-  companyInfo: { textAlign: 'right', color: '#6E6A62' },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20 },
-  clientSection: { marginBottom: 30, padding: 15, backgroundColor: '#F5F3EE', borderRadius: 4 },
-  sectionTitle: { fontSize: 12, fontWeight: 'bold', marginBottom: 8, color: '#6E6A62' },
-  table: { width: '100%', marginBottom: 30 },
-  tableHeader: { flexDirection: 'row', borderBottomWidth: 1, borderBottomColor: '#E4E0D8', paddingBottom: 8, marginBottom: 8 },
-  tableRow: { flexDirection: 'row', paddingVertical: 4, borderBottomWidth: 1, borderBottomColor: '#EEEBE4' },
+  page: { padding: 50, fontFamily: 'Helvetica', fontSize: 10, color: '#1e293b' },
+  header: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 50 },
+  logo: { width: 80, height: 80, objectFit: 'contain' },
+  companyInfo: { textAlign: 'right', color: '#64748b' },
+  title: { fontSize: 28, fontWeight: 'bold', marginBottom: 30, color: '#0f172a', letterSpacing: -1 },
+  clientSection: { marginBottom: 40, padding: 20, backgroundColor: '#f8fafc', borderRadius: 12, border: '1px solid #f1f5f9' },
+  sectionTitle: { fontSize: 10, fontWeight: 'bold', marginBottom: 12, color: '#6366f1', textTransform: 'uppercase' },
+  table: { width: '100%', marginBottom: 40 },
+  tableHeader: { flexDirection: 'row', borderBottomWidth: 2, borderBottomColor: '#f1f5f9', paddingBottom: 10, marginBottom: 10 },
+  tableRow: { flexDirection: 'row', paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#f1f5f9' },
   col1: { flex: 3 },
   col2: { flex: 1, textAlign: 'center' },
   col3: { flex: 1, textAlign: 'right' },
-  col4: { flex: 1, textAlign: 'right' },
-  totals: { width: 200, alignSelf: 'flex-end', padding: 15, backgroundColor: '#F5F3EE', borderRadius: 4 },
-  totalRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 4 },
-  totalText: { fontSize: 12, fontWeight: 'bold' },
-  footer: { position: 'absolute', bottom: 40, left: 40, right: 40, textAlign: 'center', color: '#B0ACA3', fontSize: 8, borderTopWidth: 1, borderTopColor: '#EEEBE4', paddingTop: 10 },
-  notes: { marginTop: 30, padding: 15, borderLeftWidth: 2, borderLeftColor: '#18160F', backgroundColor: '#F5F3EE' }
+  col4: { flex: 1.2, textAlign: 'right', fontWeight: 'bold' },
+  totals: { width: 220, alignSelf: 'flex-end', padding: 20, backgroundColor: '#f8fafc', borderRadius: 12 },
+  totalRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 6 },
+  totalText: { fontSize: 14, fontWeight: 'bold', color: '#6366f1' },
+  footer: { position: 'absolute', bottom: 40, left: 50, right: 50, textAlign: 'center', color: '#94a3b8', fontSize: 9, borderTopWidth: 1, borderTopColor: '#f1f5f9', paddingTop: 15 },
+  notes: { marginTop: 40, padding: 20, borderLeftWidth: 4, borderLeftColor: '#6366f1', backgroundColor: '#f8fafc', borderRadius: '0 8 8 0' }
 });
 
 export const QuoteDocument = ({ quote, profile, client }: any) => (

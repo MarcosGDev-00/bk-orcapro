@@ -37,37 +37,54 @@ export function ClientsPage() {
   };
 
   return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 24 }}>
+    <div className="animate-fade-in">
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 32 }}>
         <button 
           onClick={() => { setFormData({}); setIsModalOpen(true); }}
-          style={{ padding: '10px 22px', borderRadius: 8, background: 'var(--t1)', border: 'none', color: 'var(--s1)', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: "'Inter',sans-serif" }}
+          className="glow-hover"
+          style={{ 
+            padding: '12px 28px', 
+            borderRadius: '14px', 
+            background: 'linear-gradient(135deg, var(--accent) 0%, #a855f7 100%)', 
+            border: 'none', 
+            color: '#fff', 
+            fontSize: 14, 
+            fontWeight: 700, 
+            cursor: 'pointer',
+            boxShadow: '0 4px 15px var(--accent-glow)'
+          }}
         >
           + Novo Cliente
         </button>
       </div>
 
-      <div style={{ background: 'var(--s1)', border: '1px solid var(--ln)', borderRadius: 10, overflow: 'hidden' }}>
+      <div className="glass" style={{ borderRadius: '24px', overflow: 'hidden', boxShadow: 'var(--card-shadow)' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
           <thead>
-            <tr style={{ background: 'var(--s2)', borderBottom: '1px solid var(--ln2)' }}>
-              <th style={{ padding: '12px 24px', fontSize: 13, fontWeight: 500, color: 'var(--t2)' }}>Nome</th>
-              <th style={{ padding: '12px 24px', fontSize: 13, fontWeight: 500, color: 'var(--t2)' }}>Empresa</th>
-              <th style={{ padding: '12px 24px', fontSize: 13, fontWeight: 500, color: 'var(--t2)' }}>Email</th>
-              <th style={{ padding: '12px 24px', fontSize: 13, fontWeight: 500, color: 'var(--t2)' }}>Telefone</th>
-              <th style={{ padding: '12px 24px', fontSize: 13, fontWeight: 500, color: 'var(--t2)' }}>Ações</th>
+            <tr style={{ background: 'rgba(255,255,255,0.02)', borderBottom: '1px solid var(--surface-border)' }}>
+              <th style={{ padding: '20px 24px', fontSize: 12, fontWeight: 700, color: 'var(--t3)', textTransform: 'uppercase', letterSpacing: '1px' }}>Cliente</th>
+              <th style={{ padding: '20px 24px', fontSize: 12, fontWeight: 700, color: 'var(--t3)', textTransform: 'uppercase', letterSpacing: '1px' }}>Empresa / Documento</th>
+              <th style={{ padding: '20px 24px', fontSize: 12, fontWeight: 700, color: 'var(--t3)', textTransform: 'uppercase', letterSpacing: '1px' }}>Contato</th>
+              <th style={{ padding: '20px 24px', fontSize: 12, fontWeight: 700, color: 'var(--t3)', textTransform: 'uppercase', letterSpacing: '1px' }}>Ações</th>
             </tr>
           </thead>
           <tbody>
             {clients.map(c => (
-              <tr key={c.id} style={{ borderBottom: '1px solid var(--ln)' }}>
-                <td style={{ padding: '16px 24px', fontSize: 13, fontWeight: 500 }}>{c.name}</td>
-                <td style={{ padding: '16px 24px', fontSize: 13 }}>{c.company || '-'}</td>
-                <td style={{ padding: '16px 24px', fontSize: 13 }}>{c.email || '-'}</td>
-                <td style={{ padding: '16px 24px', fontSize: 13 }}>{c.phone || '-'}</td>
-                <td style={{ padding: '16px 24px' }}>
-                  <button onClick={() => { setFormData(c); setIsModalOpen(true); }} style={{ background: 'none', border: 'none', color: 'var(--blue)', fontSize: 13, cursor: 'pointer', marginRight: 12 }}>Editar</button>
-                  <button onClick={() => handleDelete(c.id)} style={{ background: 'none', border: 'none', color: 'var(--red)', fontSize: 13, cursor: 'pointer' }}>Excluir</button>
+              <tr key={c.id} className="glow-hover" style={{ borderBottom: '1px solid var(--surface-border)', transition: '0.2s' }}>
+                <td style={{ padding: '24px' }}>
+                  <div style={{ fontSize: 15, fontWeight: 700, color: '#fff' }}>{c.name}</div>
+                  <div style={{ fontSize: 12, color: 'var(--t2)', marginTop: 2 }}>{c.email || 'Sem email'}</div>
+                </td>
+                <td style={{ padding: '24px' }}>
+                  <div style={{ fontSize: 14, color: 'var(--t1)' }}>{c.company || '-'}</div>
+                  <div style={{ fontSize: 11, color: 'var(--t3)', marginTop: 2 }}>{c.document || 'Sem doc'}</div>
+                </td>
+                <td style={{ padding: '24px', fontSize: 14, color: 'var(--t2)' }}>{c.phone || '-'}</td>
+                <td style={{ padding: '24px' }}>
+                  <div style={{ display: 'flex', gap: 8 }}>
+                    <button onClick={() => { setFormData(c); setIsModalOpen(true); }} className="glass glow-hover" style={{ borderRadius: '10px', color: 'var(--blue)', cursor: 'pointer', padding: '10px', border: '1px solid rgba(59, 130, 246, 0.2)' }}>Editar</button>
+                    <button onClick={() => handleDelete(c.id)} className="glass glow-hover" style={{ borderRadius: '10px', color: 'var(--red)', cursor: 'pointer', padding: '10px', border: '1px solid rgba(239, 68, 68, 0.2)' }}>Excluir</button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -76,34 +93,62 @@ export function ClientsPage() {
       </div>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={formData.id ? 'Editar Cliente' : 'Novo Cliente'}>
-        <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-          {[
-            { key: 'name', label: 'Nome *', required: true },
-            { key: 'company', label: 'Empresa' },
-            { key: 'email', label: 'Email', type: 'email' },
-            { key: 'phone', label: 'Telefone' },
-            { key: 'document', label: 'Documento (CPF/CNPJ)' },
-            { key: 'address', label: 'Endereço' },
-          ].map(field => (
-            <div key={field.key}>
-              <label style={{ display: 'block', fontSize: 13, fontWeight: 500, marginBottom: 6, color: 'var(--t2)' }}>{field.label}</label>
-              <input 
-                type={field.type || 'text'}
-                required={field.required}
-                value={formData[field.key] || ''}
-                onChange={e => {
-                  let val = e.target.value;
-                  if (field.key === 'phone') val = maskPhone(val);
-                  if (field.key === 'document') val = maskCpfCnpj(val);
-                  setFormData({ ...formData, [field.key]: val });
-                }}
-                style={{ width:'100%', padding:'10px 14px', background:'var(--s2)', border:'1px solid var(--ln2)', borderRadius:8, fontSize:13, color:'var(--t1)', fontFamily:"'Inter',sans-serif", outline:'none' }}
-              />
-            </div>
-          ))}
-          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 16 }}>
-            <button type="submit" style={{ padding: '10px 22px', borderRadius: 8, background: 'var(--t1)', border: 'none', color: 'var(--s1)', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: "'Inter',sans-serif" }}>
-              Salvar
+        <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
+            {[
+              { key: 'name', label: 'Nome Completo *', required: true, full: true },
+              { key: 'company', label: 'Nome da Empresa' },
+              { key: 'document', label: 'CPF ou CNPJ' },
+              { key: 'email', label: 'E-mail Principal', type: 'email' },
+              { key: 'phone', label: 'WhatsApp / Telefone' },
+              { key: 'address', label: 'Endereço Completo', full: true },
+            ].map(field => (
+              <div key={field.key} style={{ gridColumn: field.full ? 'span 2' : 'span 1' }}>
+                <label style={{ display: 'block', fontSize: 12, fontWeight: 700, marginBottom: 8, color: 'var(--t2)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{field.label}</label>
+                <input 
+                  type={field.type || 'text'}
+                  required={field.required}
+                  value={formData[field.key] || ''}
+                  onChange={e => {
+                    let val = e.target.value;
+                    if (field.key === 'phone') val = maskPhone(val);
+                    if (field.key === 'document') val = maskCpfCnpj(val);
+                    setFormData({ ...formData, [field.key]: val });
+                  }}
+                  style={{ 
+                    width: '100%', 
+                    padding: '12px 16px', 
+                    background: 'rgba(255,255,255,0.03)', 
+                    border: '1px solid var(--surface-border)', 
+                    borderRadius: '12px', 
+                    fontSize: 14, 
+                    color: '#fff', 
+                    fontFamily: "'Inter', sans-serif", 
+                    outline: 'none',
+                    transition: 'border-color 0.2s'
+                  }}
+                  onFocus={e => e.target.style.borderColor = 'var(--accent)'}
+                  onBlur={e => e.target.style.borderColor = 'var(--surface-border)'}
+                />
+              </div>
+            ))}
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 8 }}>
+            <button 
+              type="submit" 
+              className="glow-hover"
+              style={{ 
+                padding: '12px 32px', 
+                borderRadius: '12px', 
+                background: 'var(--accent)', 
+                border: 'none', 
+                color: '#fff', 
+                fontSize: 14, 
+                fontWeight: 700, 
+                cursor: 'pointer' 
+              }}
+            >
+              Confirmar Cadastro
             </button>
           </div>
         </form>

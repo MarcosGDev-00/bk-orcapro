@@ -40,54 +40,76 @@ export function DashboardPage() {
   if (loading) return <div style={{ padding: 40 }}>Carregando...</div>;
 
   return (
-    <div>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 24, marginBottom: 32 }}>
+    <div className="animate-fade-in">
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: 24, marginBottom: 40 }}>
         {[
-          { label: 'TOTAL DE ORÇAMENTOS', val: metrics.totalQuotes },
-          { label: 'ORÇAMENTOS APROVADOS', val: metrics.approvedQuotes },
-          { label: 'VALOR TOTAL APROVADO (R$)', val: new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(metrics.totalValue) },
-          { label: 'CLIENTES CADASTRADOS', val: metrics.totalClients },
+          { label: 'Orcamentos Totais', val: metrics.totalQuotes, icon: '📄', color: 'var(--accent)' },
+          { label: 'Aprovados', val: metrics.approvedQuotes, icon: '✅', color: 'var(--green)' },
+          { label: 'Valor Faturado', val: new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(metrics.totalValue), icon: '💰', color: '#f59e0b' },
+          { label: 'Clientes Base', val: metrics.totalClients, icon: '👥', color: 'var(--blue)' },
         ].map((m, i) => (
-          <div key={i} style={{ padding: 24, background: 'var(--s1)', border: '1px solid var(--ln)', borderRadius: 10 }}>
-            <div style={{ fontSize: 10, fontFamily: 'monospace', textTransform: 'uppercase', color: 'var(--t3)', marginBottom: 8 }}>{m.label}</div>
-            <div style={{ fontSize: 32, fontWeight: 700, color: 'var(--t1)' }}>{m.val}</div>
+          <div key={i} className="glass glow-hover" style={{ 
+            padding: '24px', 
+            borderRadius: '20px', 
+            position: 'relative',
+            overflow: 'hidden'
+          }}>
+            <div style={{ 
+              position: 'absolute', 
+              top: '-10%', 
+              right: '-10%', 
+              fontSize: '80px', 
+              opacity: 0.05,
+              filter: 'grayscale(1)'
+            }}>{m.icon}</div>
+            
+            <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--t2)', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: 12 }}>{m.label}</div>
+            <div style={{ fontSize: 28, fontWeight: 800, color: '#fff', letterSpacing: '-1px' }}>{m.val}</div>
+            <div style={{ marginTop: 12, width: '40px', height: '4px', borderRadius: '2px', background: m.color, boxShadow: `0 0 10px ${m.color}66` }}></div>
           </div>
         ))}
       </div>
 
-      <div style={{ background: 'var(--s1)', border: '1px solid var(--ln)', borderRadius: 10, overflow: 'hidden' }}>
-        <h3 style={{ padding: '20px 24px', fontSize: 15, fontWeight: 600, borderBottom: '1px solid var(--ln)' }}>Últimos Orçamentos</h3>
+      <div className="glass" style={{ borderRadius: '24px', overflow: 'hidden', boxShadow: 'var(--card-shadow)' }}>
+        <div style={{ padding: '24px 32px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--surface-border)' }}>
+          <h3 className="font-heading" style={{ fontSize: 18, fontWeight: 700 }}>Atividade Recente</h3>
+          <span style={{ fontSize: 12, color: 'var(--accent)', fontWeight: 600, cursor: 'pointer' }}>Ver Todos →</span>
+        </div>
+        
         <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
           <thead>
-            <tr style={{ background: 'var(--s2)', borderBottom: '1px solid var(--ln2)' }}>
-              <th style={{ padding: '12px 24px', fontSize: 13, fontWeight: 500, color: 'var(--t2)' }}>Nº</th>
-              <th style={{ padding: '12px 24px', fontSize: 13, fontWeight: 500, color: 'var(--t2)' }}>Título</th>
-              <th style={{ padding: '12px 24px', fontSize: 13, fontWeight: 500, color: 'var(--t2)' }}>Cliente</th>
-              <th style={{ padding: '12px 24px', fontSize: 13, fontWeight: 500, color: 'var(--t2)' }}>Valor</th>
-              <th style={{ padding: '12px 24px', fontSize: 13, fontWeight: 500, color: 'var(--t2)' }}>Status</th>
-              <th style={{ padding: '12px 24px', fontSize: 13, fontWeight: 500, color: 'var(--t2)' }}>Data</th>
+            <tr style={{ background: 'rgba(255,255,255,0.02)' }}>
+              <th style={{ padding: '16px 32px', fontSize: 12, fontWeight: 600, color: 'var(--t3)', textTransform: 'uppercase' }}>Orçamento</th>
+              <th style={{ padding: '16px 32px', fontSize: 12, fontWeight: 600, color: 'var(--t3)', textTransform: 'uppercase' }}>Cliente</th>
+              <th style={{ padding: '16px 32px', fontSize: 12, fontWeight: 600, color: 'var(--t3)', textTransform: 'uppercase' }}>Valor</th>
+              <th style={{ padding: '16px 32px', fontSize: 12, fontWeight: 600, color: 'var(--t3)', textTransform: 'uppercase' }}>Status</th>
+              <th style={{ padding: '16px 32px', fontSize: 12, fontWeight: 600, color: 'var(--t3)', textTransform: 'uppercase' }}>Data</th>
             </tr>
           </thead>
           <tbody>
             {recentQuotes.map(q => (
-              <tr key={q.id} style={{ borderBottom: '1px solid var(--ln)' }}>
-                <td style={{ padding: '16px 24px', fontSize: 13 }}>#{q.number}</td>
-                <td style={{ padding: '16px 24px', fontSize: 13, fontWeight: 500 }}>{q.title}</td>
-                <td style={{ padding: '16px 24px', fontSize: 13 }}>{q.clients?.name || '-'}</td>
-                <td style={{ padding: '16px 24px', fontSize: 13 }}>
+              <tr key={q.id} className="glow-hover" style={{ borderBottom: '1px solid var(--surface-border)', cursor: 'default' }}>
+                <td style={{ padding: '20px 32px' }}>
+                  <div style={{ fontWeight: 600, fontSize: 14 }}>{q.title}</div>
+                  <div style={{ fontSize: 11, color: 'var(--t3)', marginTop: 2 }}>#{q.number}</div>
+                </td>
+                <td style={{ padding: '20px 32px', fontSize: 14, color: 'var(--t2)' }}>{q.clients?.name || '-'}</td>
+                <td style={{ padding: '20px 32px', fontSize: 14, fontWeight: 700, color: '#fff' }}>
                   {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(q.total))}
                 </td>
-                <td style={{ padding: '16px 24px' }}>
+                <td style={{ padding: '20px 32px' }}>
                   <StatusBadge status={q.status as any} />
                 </td>
-                <td style={{ padding: '16px 24px', fontSize: 13, color: 'var(--t2)' }}>
+                <td style={{ padding: '20px 32px', fontSize: 13, color: 'var(--t3)' }}>
                   {new Date(q.created_at).toLocaleDateString('pt-BR')}
                 </td>
               </tr>
             ))}
             {recentQuotes.length === 0 && (
               <tr>
-                <td colSpan={6} style={{ padding: '32px 24px', textAlign: 'center', fontSize: 13, color: 'var(--t3)' }}>Nenhum orçamento encontrado</td>
+                <td colSpan={5} style={{ padding: '48px 32px', textAlign: 'center', fontSize: 14, color: 'var(--t3)' }}>
+                   Prepare sua primeira proposta para ver os dados aqui.
+                </td>
               </tr>
             )}
           </tbody>

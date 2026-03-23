@@ -9,10 +9,10 @@ interface EmptyStateProps {
 
 export function EmptyState({ icon, title, description, action }: EmptyStateProps) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '60px 20px', background: 'var(--s1)', borderRadius: 10, border: '1px solid var(--ln)', textAlign: 'center' }}>
-      <div style={{ color: 'var(--t3)', marginBottom: 16 }}>{icon}</div>
-      <h3 style={{ fontSize: 16, fontWeight: 600, color: 'var(--t1)', marginBottom: 8 }}>{title}</h3>
-      <p style={{ fontSize: 14, color: 'var(--t2)', marginBottom: action ? 24 : 0, maxWidth: 300 }}>{description}</p>
+    <div className="glass animate-fade-in" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '80px 40px', borderRadius: '28px', border: '1px solid var(--surface-border)', textAlign: 'center', boxShadow: 'var(--card-shadow)' }}>
+      <div style={{ color: 'var(--accent)', marginBottom: 24, opacity: 0.6 }}>{icon}</div>
+      <h3 className="font-heading" style={{ fontSize: 20, fontWeight: 700, color: '#fff', marginBottom: 12 }}>{title}</h3>
+      <p style={{ fontSize: 14, color: 'var(--t2)', marginBottom: action ? 32 : 0, maxWidth: 400, lineHeight: 1.6 }}>{description}</p>
       {action}
     </div>
   );
