@@ -99,26 +99,41 @@ export function Layout() {
         position: 'relative',
         height: window.innerWidth <= 1024 ? '100vh' : 'calc(100vh - 32px)',
         boxShadow: 'var(--card-shadow)',
-        zIndex: 150
+        zIndex: 150,
+        overflow: 'visible' // CRITICAL: Allow toggle button to hang out
       }}>
-        {/* Sidebar Header - Clickable for Expansion */}
-        <div 
-          onClick={() => !mobileMenuOpen && setExpanded(!expanded)}
-          className="glow-hover desktop-only"
-          style={{ 
-            padding: '24px 16px', 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'flex-start',
-            gap: 12, 
-            flexShrink: 0,
+        {/* Toggle Expansão Desktop (A "Bolinha") */}
+        <button 
+          onClick={() => setExpanded(!expanded)}
+          className="desktop-only shadow-lg glow-hover"
+          style={{
+            position: 'absolute',
+            right: -16,
+            top: 48,
+            width: 32,
+            height: 32,
+            borderRadius: '50%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
             cursor: 'pointer',
-            borderBottom: '1px solid var(--surface-border)',
-            marginBottom: '12px',
-            overflow: 'hidden',
-            minHeight: 80
+            padding: 0,
+            color: 'var(--t1)',
+            zIndex: 200,
+            border: '1px solid var(--surface-border)',
+            background: 'var(--surface)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)',
+            transition: 'all 0.3s'
           }}
         >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block' }}>
+            {expanded ? <path d="M15 18l-6-6 6-6" /> : <path d="M9 18l6-6-6-6" />}
+          </svg>
+        </button>
+
+        {/* Sidebar Header - Branding Only */}
+        <div style={{ padding: '32px 24px', display: 'flex', alignItems: 'center', gap: 16, flexShrink: 0 }}>
           <div style={{ 
             width: 36, 
             height: 36, 
@@ -128,33 +143,22 @@ export function Layout() {
             alignItems: 'center', 
             justifyContent: 'center',
             boxShadow: '0 0 15px var(--accent-glow)',
-            flexShrink: 0,
-            marginLeft: expanded ? 0 : 4
+            flexShrink: 0
           }}>
             <FileText size={20} color="#fff" />
           </div>
-          
-          <div style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'space-between',
-            flex: 1,
-            opacity: expanded ? 1 : 0,
-            visibility: expanded ? 'visible' : 'hidden',
-            transition: 'all 0.2s',
-            minWidth: 0
-          }}>
+          {(expanded || mobileMenuOpen) && (
             <span className="font-heading" style={{ 
               fontWeight: 800, 
               fontSize: 18, 
-              letterSpacing: '-0.5px', 
               color: 'var(--t1)',
-              whiteSpace: 'nowrap'
+              whiteSpace: 'nowrap', 
+              overflow: 'hidden', 
+              textOverflow: 'ellipsis' 
             }}>
               OrçaPro
             </span>
-            <ChevronLeft size={16} style={{ color: 'var(--t3)', flexShrink: 0 }} />
-          </div>
+          )}
         </div>
 
         {/* Header Mobile Only */}
