@@ -12,9 +12,21 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div style={{ position: 'fixed', inset: 0, zIndex: 1000, display: 'flex', alignItems: window.innerWidth <= 768 ? 'flex-end' : 'center', justifyContent: 'center', padding: window.innerWidth <= 768 ? '0' : '16px' }}>
+    <div style={{ 
+      position: 'fixed', 
+      inset: 0, 
+      zIndex: 1000, 
+      display: 'flex', 
+      flexDirection: 'column',
+      padding: window.innerWidth <= 768 ? '0' : '40px 16px',
+      overflowY: 'auto',
+      background: 'rgba(0,0,0,0.6)',
+      backdropFilter: 'blur(10px)',
+      WebkitBackdropFilter: 'blur(10px)',
+      alignItems: 'center'
+    }}>
       <div 
-        style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }} 
+        style={{ position: 'fixed', inset: 0, zIndex: -1 }} 
         onClick={onClose} 
       />
       <div 
@@ -27,13 +39,14 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
           background: 'var(--modal-bg)',
           display: 'flex', 
           flexDirection: 'column', 
-          maxHeight: window.innerWidth <= 768 ? '92vh' : '90vh',
-          overflow: 'hidden',
+          margin: window.innerWidth <= 768 ? 'auto 0 0 0' : 'auto',
           border: '1px solid var(--surface-border)',
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
+          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+          flexShrink: 0,
+          maxHeight: window.innerWidth <= 768 ? '92vh' : 'none'
         }}
       >
-        <div style={{ padding: window.innerWidth <= 768 ? '24px' : '24px 40px', borderBottom: '1px solid var(--surface-border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(255,255,255,0.01)', flexShrink: 0 }}>
+        <div style={{ padding: '24px 32px', borderBottom: '1px solid var(--surface-border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(255,255,255,0.01)', flexShrink: 0 }}>
           <h2 className="font-heading" style={{ fontSize: 22, fontWeight: 800, color: 'var(--t1)', letterSpacing: '-0.5px' }}>{title}</h2>
           <button 
             onClick={onClose} 
@@ -54,7 +67,7 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
             <X size={20} strokeWidth={2.5} />
           </button>
         </div>
-        <div style={{ padding: window.innerWidth <= 768 ? '24px' : '40px', overflowY: 'auto', flex: 1 }}>
+        <div style={{ padding: window.innerWidth <= 768 ? '24px' : '40px', overflowY: 'visible' }}>
           {children}
         </div>
       </div>

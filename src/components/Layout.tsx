@@ -90,14 +90,15 @@ export function Layout() {
       <aside className={`glass ${mobileMenuOpen ? 'mobile-sidebar-open' : ''}`} style={{
         margin: window.innerWidth <= 1024 ? '0' : '16px',
         borderRadius: window.innerWidth <= 1024 ? '0 24px 24px 0' : '24px',
-        width: expanded ? 240 : 80,
+        width: window.innerWidth <= 1024 ? 280 : (expanded ? 240 : 80),
         transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
         display: 'flex',
         flexDirection: 'column',
-        position: 'relative', // Handled by CSS for mobile
+        position: 'relative',
         height: window.innerWidth <= 1024 ? '100vh' : 'calc(100vh - 32px)',
         boxShadow: 'var(--card-shadow)',
-        zIndex: 150
+        zIndex: 150,
+        overflow: 'hidden'
       }}>
         {/* Toggle Expansão Desktop */}
         <button 
@@ -122,20 +123,33 @@ export function Layout() {
           {expanded ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
         </button>
 
-        <div style={{ padding: '32px 24px', display: 'flex', alignItems: 'center', gap: 16 }}>
-          <div style={{ 
-            width: 36, 
-            height: 36, 
-            borderRadius: '12px', 
-            background: 'linear-gradient(135deg, var(--accent) 0%, #a855f7 100%)', 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center',
-            boxShadow: '0 0 15px var(--accent-glow)'
-          }}>
-            <FileText size={20} color="#fff" />
+        <div style={{ padding: '32px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexShrink: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16, minWidth: 0 }}>
+            <div style={{ 
+              width: 36, 
+              height: 36, 
+              borderRadius: '12px', 
+              background: 'linear-gradient(135deg, var(--accent) 0%, #a855f7 100%)', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center',
+              boxShadow: '0 0 15px var(--accent-glow)',
+              flexShrink: 0
+            }}>
+              <FileText size={20} color="#fff" />
+            </div>
+            {(expanded || mobileMenuOpen) && <span className="font-heading" style={{ fontWeight: 800, fontSize: 18, letterSpacing: '-0.5px', color: isDark ? '#fff' : 'var(--t1)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>OrçaPro</span>}
           </div>
-          {(expanded || mobileMenuOpen) && <span className="font-heading" style={{ fontWeight: 800, fontSize: 18, letterSpacing: '-0.5px', color: isDark ? '#fff' : 'var(--t1)' }}>OrçaPro</span>}
+          
+          {mobileMenuOpen && (
+            <button 
+              onClick={() => setMobileMenuOpen(false)}
+              className="glass"
+              style={{ width: 36, height: 36, borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--surface-border)', color: 'var(--t2)', cursor: 'pointer', flexShrink: 0 }}
+            >
+              <ChevronLeft size={20} strokeWidth={3} />
+            </button>
+          )}
         </div>
 
         <nav style={{ flex: 1, padding: '12px', overflowY: 'auto', overflowX: 'hidden' }}>

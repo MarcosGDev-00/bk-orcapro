@@ -144,8 +144,10 @@ input:focus, select:focus, textarea:focus {
     left: -320px !important;
     margin: 0 !important;
     height: 100vh !important;
+    width: 280px !important;
     border-radius: 0 24px 24px 0 !important;
     box-shadow: 20px 0 60px rgba(0,0,0,0.5) !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
   }
   
   aside.mobile-sidebar-open {
