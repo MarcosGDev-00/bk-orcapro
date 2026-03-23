@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { StatusBadge } from '../components/StatusBadge';
 import { useNavigate } from 'react-router-dom';
-import { Eye, Trash2 } from 'lucide-react';
+import { Eye, Trash2, Download, MessageCircle } from 'lucide-react';
+import { pdf } from '@react-pdf/renderer';
+import { QuoteDocument } from '../components/QuoteDocument';
 
 export function QuotesPage() {
   const [quotes, setQuotes] = useState<any[]>([]);
@@ -20,6 +22,31 @@ export function QuotesPage() {
       await supabase.from('quotes').delete().eq('id', id);
       fetchQuotes();
     }
+  };
+
+  const downloadPDF = async (quote: any) => {
+    const { data: { user } } = await supabase.auth.getUser();
+    const { data: profile } = await supabase.from('profiles').select('*').eq('id', user?.id).single();
+    const { data: client } = quote.client_id ? await supabase.from('clients').select('*').eq('id', quote.client_id).single() : { data: null };
+    
+    const blob = await pdf(<QuoteDocument quote={quote} profile={profile} client={client} />).toBlob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Orcamento_${quote.number}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const sendWhatsApp = async (quote: any) => {
+    const { data: client } = quote.client_id ? await supabase.from('clients').select('*').eq('id', quote.client_id).single() : { data: null };
+    const phone = client?.phone ? client.phone.replace(/\D/g, '') : '';
+    const totalMsg = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(quote.total));
+    const text = `Olá${client?.name ? ` ${client.name}` : ''}, aqui está o resumo do nosso orçamento #${quote.number}.\n\n*Título:* ${quote.title}\n*Total:* ${totalMsg}\n\nEstou enviando o PDF do orçamento em anexo para sua análise.`;
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank');
   };
 
   return (
@@ -62,8 +89,14 @@ export function QuotesPage() {
                   {new Date(q.created_at).toLocaleDateString('pt-BR')}
                 </td>
                 <td style={{ padding: '16px 24px' }}>
-                  <button onClick={() => navigate(`/orcamentos/${q.id}`)} style={{ background: 'none', border: 'none', color: 'var(--blue)', cursor: 'pointer', padding: 4 }} title="Ver">
+                  <button onClick={() => navigate(`/orcamentos/${q.id}`)} style={{ background: 'none', border: 'none', color: 'var(--blue)', cursor: 'pointer', padding: 4 }} title="Visualizar Detalhes">
                     <Eye size={16} />
+                  </button>
+                  <button onClick={() => downloadPDF(q)} style={{ background: 'none', border: 'none', color: 'var(--t1)', cursor: 'pointer', padding: 4, marginLeft: 8 }} title="Baixar PDF">
+                    <Download size={16} />
+                  </button>
+                  <button onClick={() => sendWhatsApp(q)} style={{ background: 'none', border: 'none', color: '#16A34A', cursor: 'pointer', padding: 4, marginLeft: 8 }} title="Enviar WhatsApp">
+                    <MessageCircle size={16} />
                   </button>
                   <button onClick={() => handleDelete(q.id)} style={{ background: 'none', border: 'none', color: 'var(--red)', cursor: 'pointer', padding: 4, marginLeft: 8 }} title="Excluir">
                     <Trash2 size={16} />

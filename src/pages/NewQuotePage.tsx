@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { Trash2, Plus } from 'lucide-react';
 import { pdf } from '@react-pdf/renderer';
 import { QuoteDocument } from '../components/QuoteDocument';
+import { maskCurrency, parseCurrency } from '../lib/masks';
 
 export function NewQuotePage() {
   const [clients, setClients] = useState<any[]>([]);
@@ -40,6 +41,19 @@ export function NewQuotePage() {
     
     item[field] = value;
     item.subtotal = Number(item.quantity || 0) * Number(item.unit_price || 0);
+    setItems(newItems);
+  };
+
+  const handleMainServiceChange = (id: string) => {
+    if (!id) return;
+    const s = services.find(srv => srv.id === id);
+    if (!s) return;
+    const newItems = [...items];
+    if (newItems.length > 0) {
+      newItems[0] = { ...newItems[0], service_id: s.id, description: s.name, unit_price: s.unit_price, subtotal: s.unit_price * (newItems[0].quantity || 1) };
+    } else {
+      newItems.push({ service_id: s.id, description: s.name, quantity: 1, unit_price: s.unit_price, subtotal: s.unit_price });
+    }
     setItems(newItems);
   };
 
@@ -118,6 +132,13 @@ export function NewQuotePage() {
               <label style={{ display: 'block', fontSize: 13, fontWeight: 500, marginBottom: 6, color: 'var(--t2)' }}>Validade</label>
               <input type="date" value={validUntil} onChange={e => setValidUntil(e.target.value)} style={{ width:'100%', padding:'10px 14px', background:'var(--s2)', border:'1px solid var(--ln2)', borderRadius:8, fontSize:13, color:'var(--t1)', fontFamily:"'Inter',sans-serif", outline: 'none' }} />
             </div>
+            <div style={{ flex: 1 }}>
+              <label style={{ display: 'block', fontSize: 13, fontWeight: 500, marginBottom: 6, color: 'var(--t2)' }}>Serviço Principal</label>
+              <select onChange={e => handleMainServiceChange(e.target.value)} style={{ width:'100%', padding:'10px 14px', background:'var(--s2)', border:'1px solid var(--ln2)', borderRadius:8, fontSize:13, color:'var(--t1)', fontFamily:"'Inter',sans-serif", outline:'none' }}>
+                <option value="">(Nenhum - Preencher Manualmente)</option>
+                {services.map(s => <option key={s.id} value={s.id}>{s.name}</option>)}
+              </select>
+            </div>
           </div>
         </div>
 
@@ -137,7 +158,7 @@ export function NewQuotePage() {
                   <input type="number" min="1" value={item.quantity} onChange={e => handleItemChange(index, 'quantity', e.target.value)} style={{ width:'100%', padding:'10px 14px', background:'var(--s2)', border:'1px solid var(--ln2)', borderRadius:8, fontSize:13, color:'var(--t1)', fontFamily:"'Inter',sans-serif", outline:'none' }} />
                 </div>
                 <div style={{ width: 120 }}>
-                  <input type="number" step="0.01" value={item.unit_price} onChange={e => handleItemChange(index, 'unit_price', e.target.value)} style={{ width:'100%', padding:'10px 14px', background:'var(--s2)', border:'1px solid var(--ln2)', borderRadius:8, fontSize:13, color:'var(--t1)', fontFamily:"'Inter',sans-serif", outline:'none' }} />
+                  <input type="text" value={maskCurrency(item.unit_price)} onChange={e => handleItemChange(index, 'unit_price', parseCurrency(e.target.value))} style={{ width:'100%', padding:'10px 14px', background:'var(--s2)', border:'1px solid var(--ln2)', borderRadius:8, fontSize:13, color:'var(--t1)', fontFamily:"'Inter',sans-serif", outline:'none' }} />
                 </div>
                 <div style={{ width: 120, padding: '10px 14px', fontSize: 13, background: 'var(--bg)', borderRadius: 8, border: '1px solid transparent', textAlign: 'right', fontWeight: 600 }}>
                   {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.subtotal)}
@@ -170,7 +191,7 @@ export function NewQuotePage() {
           
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12, fontSize: 13, color: 'var(--t2)' }}>
             <span>Desconto (R$)</span>
-            <input type="number" step="0.01" value={discount} onChange={e => setDiscount(Number(e.target.value))} style={{ width: 100, padding:'6px 10px', background:'var(--s2)', border:'1px solid var(--ln2)', borderRadius:8, fontSize:13, color:'var(--t1)', fontFamily:"'Inter',sans-serif", outline:'none', textAlign: 'right' }} />
+            <input type="text" value={maskCurrency(discount)} onChange={e => setDiscount(parseCurrency(e.target.value))} style={{ width: 100, padding:'6px 10px', background:'var(--s2)', border:'1px solid var(--ln2)', borderRadius:8, fontSize:13, color:'var(--t1)', fontFamily:"'Inter',sans-serif", outline:'none', textAlign: 'right' }} />
           </div>
 
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 16, paddingTop: 16, borderTop: '1px solid var(--ln)', fontSize: 16, fontWeight: 700 }}>

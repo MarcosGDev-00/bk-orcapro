@@ -24,13 +24,27 @@ export function QuoteDetailPage() {
     loadQuote();
   }, [id]);
 
-  const generatePDF = async () => {
+  const downloadPDF = async () => {
     const { data: { user } } = await supabase.auth.getUser();
     const { data: profile } = await supabase.from('profiles').select('*').eq('id', user?.id).single();
     
     const blob = await pdf(<QuoteDocument quote={quote} profile={profile} client={client} />).toBlob();
     const url = URL.createObjectURL(blob);
-    window.open(url);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `Orcamento_${quote.number}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  };
+
+  const sendWhatsApp = () => {
+    const phone = client?.phone ? client.phone.replace(/\D/g, '') : '';
+    const totalMsg = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(quote.total));
+    const text = `Olá${client?.name ? ` ${client.name}` : ''}, aqui está o resumo do nosso orçamento #${quote.number}.\n\n*Título:* ${quote.title}\n*Total:* ${totalMsg}\n\nSegue o PDF do orçamento para sua análise.`;
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank');
   };
 
   if (!quote) return <div style={{ padding: 40 }}>Carregando...</div>;
@@ -43,8 +57,11 @@ export function QuoteDetailPage() {
           <button onClick={() => navigate('/orcamentos')} style={{ padding: '10px 22px', borderRadius: 8, background: 'transparent', border: '1px solid var(--ln2)', color: 'var(--t2)', fontSize: 13, cursor: 'pointer', fontFamily: "'Inter',sans-serif" }}>
             Voltar
           </button>
-          <button onClick={generatePDF} style={{ padding: '10px 22px', borderRadius: 8, background: 'var(--t1)', border: 'none', color: 'var(--s1)', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: "'Inter',sans-serif" }}>
-            Gerar PDF
+          <button onClick={downloadPDF} style={{ padding: '10px 22px', borderRadius: 8, background: 'var(--blue)', border: 'none', color: '#fff', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: "'Inter',sans-serif" }}>
+            Baixar PDF
+          </button>
+          <button onClick={sendWhatsApp} style={{ padding: '10px 22px', borderRadius: 8, background: '#16A34A', border: 'none', color: '#fff', fontSize: 13, fontWeight: 600, cursor: 'pointer', fontFamily: "'Inter',sans-serif" }}>
+            WhatsApp
           </button>
         </div>
       </div>

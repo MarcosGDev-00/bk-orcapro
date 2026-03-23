@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { Modal } from '../components/Modal';
+import { maskPhone, maskCpfCnpj } from '../lib/masks';
 
 export function ClientsPage() {
   const [clients, setClients] = useState<any[]>([]);
@@ -90,7 +91,12 @@ export function ClientsPage() {
                 type={field.type || 'text'}
                 required={field.required}
                 value={formData[field.key] || ''}
-                onChange={e => setFormData({ ...formData, [field.key]: e.target.value })}
+                onChange={e => {
+                  let val = e.target.value;
+                  if (field.key === 'phone') val = maskPhone(val);
+                  if (field.key === 'document') val = maskCpfCnpj(val);
+                  setFormData({ ...formData, [field.key]: val });
+                }}
                 style={{ width:'100%', padding:'10px 14px', background:'var(--s2)', border:'1px solid var(--ln2)', borderRadius:8, fontSize:13, color:'var(--t1)', fontFamily:"'Inter',sans-serif", outline:'none' }}
               />
             </div>

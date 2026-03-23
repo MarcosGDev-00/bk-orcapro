@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { Modal } from '../components/Modal';
+import { maskCurrency, parseCurrency } from '../lib/masks';
 
 export function ServicesPage() {
   const [services, setServices] = useState<any[]>([]);
@@ -89,7 +90,7 @@ export function ServicesPage() {
           <div style={{ display: 'flex', gap: 16 }}>
             <div style={{ flex: 1 }}>
               <label style={{ display: 'block', fontSize: 13, fontWeight: 500, marginBottom: 6, color: 'var(--t2)' }}>Preço *</label>
-              <input type="number" step="0.01" required value={formData.unit_price || 0} onChange={e => setFormData({ ...formData, unit_price: e.target.value })} style={{ width:'100%', padding:'10px 14px', background:'var(--s2)', border:'1px solid var(--ln2)', borderRadius:8, fontSize:13, color:'var(--t1)', fontFamily:"'Inter',sans-serif", outline:'none' }} />
+              <input type="text" required value={maskCurrency(formData.unit_price)} onChange={e => setFormData({ ...formData, unit_price: parseCurrency(e.target.value) })} style={{ width:'100%', padding:'10px 14px', background:'var(--s2)', border:'1px solid var(--ln2)', borderRadius:8, fontSize:13, color:'var(--t1)', fontFamily:"'Inter',sans-serif", outline:'none' }} />
             </div>
             <div style={{ flex: 1 }}>
               <label style={{ display: 'block', fontSize: 13, fontWeight: 500, marginBottom: 6, color: 'var(--t2)' }}>Unidade (un/h/m²)</label>
