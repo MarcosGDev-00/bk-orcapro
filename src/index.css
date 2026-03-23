@@ -2,30 +2,7 @@
 @import "tailwindcss";
 
 :root {
-  /* Aura Dark - Midnight Obsidian (Default) */
-  --bg: #020617;
-  --surface: rgba(15, 23, 42, 0.7);
-  --surface-border: rgba(255, 255, 255, 0.08);
-  --accent: #6366f1;
-  --accent-glow: rgba(99, 102, 241, 0.2);
-  --t1: #f8fafc;
-  --t2: #94a3b8;
-  --t3: #475569;
-  --t4: #1e293b;
-  
-  /* Semantic Colors */
-  --green: #10b981;
-  --red: #ef4444;
-  --blue: #3b82f6;
-  
-  /* Glassmorphism Refined */
-  --glass: blur(20px);
-  --card-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-  --modal-bg: rgba(7, 10, 20, 0.9);
-}
-
-.light-theme {
-  /* Aura Light - Snow Glass */
+  /* Aura Light - Snow Glass (Default) */
   --bg: #fdfdfd;
   --surface: rgba(255, 255, 255, 0.85);
   --surface-border: rgba(0, 0, 0, 0.12);
@@ -39,7 +16,29 @@
   --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
   --modal-bg: #ffffff;
   
-  background: radial-gradient(circle at 50% 0%, #ffffff 0%, #f8fafc 100%) !important;
+  /* Semantic Colors */
+  --green: #10b981;
+  --red: #ef4444;
+  --blue: #3b82f6;
+  
+  /* Glassmorphism Refined */
+  --glass: blur(20px);
+}
+
+.dark-theme {
+  /* Aura Dark - Midnight Obsidian */
+  --bg: #020617;
+  --surface: rgba(15, 23, 42, 0.7);
+  --surface-border: rgba(255, 255, 255, 0.08);
+  --accent: #6366f1;
+  --accent-glow: rgba(99, 102, 241, 0.2);
+  --t1: #f8fafc;
+  --t2: #94a3b8;
+  --t3: #475569;
+  --t4: #1e293b;
+  
+  --card-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  --modal-bg: rgba(7, 10, 20, 0.9);
 }
 
 * { 
@@ -51,11 +50,20 @@
 
 body {
   font-family: 'Inter', system-ui, sans-serif;
-  background: radial-gradient(circle at 50% 0%, #0f172a 0%, #020617 100%);
+  background: radial-gradient(circle at 50% 0%, #ffffff 0%, #f1f5f9 100%);
   color: var(--t1);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+}
+
+.dark-theme body {
+  background: radial-gradient(circle at 50% 0%, #0f172a 0%, #020617 100%);
+}
+
+.dark-theme .glass {
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 h1, h2, h3, h4, .font-heading {

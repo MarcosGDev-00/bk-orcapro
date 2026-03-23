@@ -24,7 +24,7 @@ export function Layout() {
   }, []);
 
   useEffect(() => {
-    document.body.className = isDark ? '' : 'light-theme';
+    document.body.className = isDark ? 'dark-theme' : '';
     localStorage.setItem('aura-theme', isDark ? 'dark' : 'light');
   }, [isDark]);
 
@@ -73,7 +73,9 @@ export function Layout() {
     fontSize: 14,
     fontWeight: 600,
     transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-    boxShadow: isActive ? '0 8px 16px var(--accent-glow)' : 'none'
+    boxShadow: isActive ? '0 8px 16px var(--accent-glow)' : 'none',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden'
   });
 
   return (
@@ -104,75 +106,72 @@ export function Layout() {
           onClick={() => !mobileMenuOpen && setExpanded(!expanded)}
           className="glow-hover desktop-only"
           style={{ 
-            padding: '32px 20px', 
+            padding: '24px 16px', 
             display: 'flex', 
             alignItems: 'center', 
-            justifyContent: expanded ? 'space-between' : 'center', 
+            justifyContent: 'flex-start',
             gap: 12, 
             flexShrink: 0,
             cursor: 'pointer',
-            transition: 'all 0.3s',
             borderBottom: '1px solid var(--surface-border)',
-            marginBottom: '12px'
+            marginBottom: '12px',
+            overflow: 'hidden',
+            minHeight: 80
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 }}>
-            <div style={{ 
-              width: 32, 
-              height: 32, 
-              borderRadius: '10px', 
-              background: 'linear-gradient(135deg, var(--accent) 0%, #a855f7 100%)', 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'center',
-              boxShadow: '0 0 15px var(--accent-glow)',
-              flexShrink: 0
-            }}>
-              <FileText size={18} color="#fff" />
-            </div>
-            {expanded && (
-              <span className="font-heading" style={{ 
-                fontWeight: 800, 
-                fontSize: 18, 
-                letterSpacing: '-0.5px', 
-                color: isDark ? '#fff' : 'var(--t1)',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis'
-              }}>
-                OrçaPro
-              </span>
-            )}
-          </div>
-          {expanded && (
-            <div style={{ color: 'var(--t3)', display: 'flex', alignItems: 'center' }}>
-              <ChevronLeft size={16} strokeWidth={3} />
-            </div>
-          )}
-        </div>
-
-        {/* Header for Mobile only (separate for clarity) */}
-        <div 
-          className="mobile-only"
-          style={{ 
-            padding: '32px 24px', 
+          <div style={{ 
+            width: 36, 
+            height: 36, 
+            borderRadius: '12px', 
+            background: 'linear-gradient(135deg, var(--accent) 0%, #a855f7 100%)', 
             display: 'flex', 
             alignItems: 'center', 
-            justifyContent: 'space-between', 
-            gap: 16, 
-            flexShrink: 0 
-          }}
+            justifyContent: 'center',
+            boxShadow: '0 0 15px var(--accent-glow)',
+            flexShrink: 0,
+            marginLeft: expanded ? 0 : 4
+          }}>
+            <FileText size={20} color="#fff" />
+          </div>
+          
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'space-between',
+            flex: 1,
+            opacity: expanded ? 1 : 0,
+            visibility: expanded ? 'visible' : 'hidden',
+            transition: 'all 0.2s',
+            minWidth: 0
+          }}>
+            <span className="font-heading" style={{ 
+              fontWeight: 800, 
+              fontSize: 18, 
+              letterSpacing: '-0.5px', 
+              color: 'var(--t1)',
+              whiteSpace: 'nowrap'
+            }}>
+              OrçaPro
+            </span>
+            <ChevronLeft size={16} style={{ color: 'var(--t3)', flexShrink: 0 }} />
+          </div>
+        </div>
+
+        {/* Header Mobile Only */}
+        <div 
+          className="mobile-only"
+          style={{ padding: '32px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexShrink: 0 }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16, minWidth: 0 }}>
-            <div style={{ width: 36, height: 36, borderRadius: '12px', background: 'linear-gradient(135deg, var(--accent) 0%, #a855f7 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+            <div style={{ width: 36, height: 36, borderRadius: '12px', background: 'linear-gradient(135deg, var(--accent) 0%, #a855f7 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <FileText size={20} color="#fff" />
             </div>
-            <span className="font-heading" style={{ fontWeight: 800, fontSize: 18, color: isDark ? '#fff' : 'var(--t1)' }}>OrçaPro</span>
+            <span className="font-heading" style={{ fontWeight: 800, fontSize: 18, color: 'var(--t1)' }}>OrçaPro</span>
           </div>
           <button 
             onClick={() => setMobileMenuOpen(false)}
             className="glass"
-            style={{ width: 36, height: 36, borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--surface-border)', color: 'var(--t2)', cursor: 'pointer', flexShrink: 0 }}
+            style={{ width: 36, height: 36, borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--surface-border)', color: 'var(--t2)', cursor: 'pointer' }}
           >
             <ChevronLeft size={20} strokeWidth={3} />
           </button>
