@@ -105,7 +105,7 @@ export function Layout() {
           className="glass glow-hover desktop-only"
           style={{
             position: 'absolute',
-            right: -12,
+            right: -14,
             top: 48,
             width: 28,
             height: 28,
@@ -114,9 +114,12 @@ export function Layout() {
             alignItems: 'center',
             justifyContent: 'center',
             cursor: 'pointer',
+            padding: 0,
             color: 'var(--t1)',
             zIndex: 110,
-            border: '1px solid var(--surface-border)'
+            border: '1px solid var(--surface-border)',
+            background: 'var(--surface)',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
           }}
         >
           {expanded ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
@@ -188,6 +191,7 @@ export function Layout() {
             style={{
               display: 'flex',
               alignItems: 'center',
+              justifyContent: (expanded || mobileMenuOpen) ? 'flex-start' : 'center',
               gap: 16,
               width: '100%',
               background: 'rgba(239, 68, 68, 0.05)',
@@ -195,7 +199,7 @@ export function Layout() {
               borderRadius: '12px',
               color: 'var(--red)',
               cursor: 'pointer',
-              padding: '12px 16px',
+              padding: (expanded || mobileMenuOpen) ? '12px 16px' : '12px 0',
               fontSize: 14,
               fontWeight: 600
             }}
