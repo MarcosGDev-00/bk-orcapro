@@ -110,123 +110,139 @@ export function NewQuotePage() {
   };
 
   return (
-    <div className="animate-fade-in" style={{ display: 'flex', gap: 32, alignItems: 'flex-start' }}>
-      <div style={{ flex: '1', display: 'flex', flexDirection: 'column', gap: 32, minWidth: 0 }}>
+    <div className="animate-fade-in" style={{ display: 'flex', gap: 32, alignItems: 'flex-start', flexDirection: window.innerWidth <= 1100 ? 'column' : 'row' }}>
+      <div style={{ flex: '1', display: 'flex', flexDirection: 'column', gap: 32, minWidth: 0, width: '100%' }}>
         {/* Informações Básicas */}
-        <div className="glass" style={{ padding: '32px', borderRadius: '28px', border: '1px solid var(--surface-border)' }}>
-          <h3 className="font-heading" style={{ fontSize: 18, fontWeight: 700, marginBottom: 24, color: '#fff' }}>📋 Informações Estratégicas</h3>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 24 }}>
+        <div className="glass" style={{ padding: window.innerWidth <= 768 ? '24px' : '32px', borderRadius: '28px', border: '1px solid var(--surface-border)' }}>
+          <h3 className="font-heading" style={{ fontSize: 18, fontWeight: 700, marginBottom: 24, color: 'var(--t1)' }}>📋 Informações Estratégicas</h3>
+          <div style={{ display: 'grid', gridTemplateColumns: window.innerWidth <= 600 ? '1fr' : '1fr 1fr', gap: 24, marginBottom: 24 }}>
             <div>
-              <label style={{ display: 'block', fontSize: 11, fontWeight: 700, marginBottom: 8, color: 'var(--t3)', textTransform: 'uppercase', letterSpacing: '1px' }}>Título do Projeto</label>
-              <input value={title} onChange={e => setTitle(e.target.value)} required style={{ width: '100%', padding: '12px 16px', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--surface-border)', borderRadius: '12px', fontSize: 14, color: '#fff', fontFamily: "'Inter', sans-serif", outline: 'none' }} onFocus={e => e.target.style.borderColor = 'var(--accent)'} onBlur={e => e.target.style.borderColor = 'var(--surface-border)'} />
+              <label style={{ display: 'block', fontSize: 11, fontWeight: 700, marginBottom: 10, color: 'var(--t3)', textTransform: 'uppercase', letterSpacing: '1px' }}>Título do Projeto</label>
+              <input value={title} onChange={e => setTitle(e.target.value)} required style={{ width: '100%', padding: '14px 18px', background: 'var(--t4)', border: '1px solid var(--surface-border)', borderRadius: '14px', fontSize: 14, color: 'var(--t1)', fontFamily: "'Inter', sans-serif", outline: 'none' }} className="glow-hover" />
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: 11, fontWeight: 700, marginBottom: 8, color: 'var(--t3)', textTransform: 'uppercase', letterSpacing: '1px' }}>Cliente Alvo</label>
-              <select value={clientId} onChange={e => setClientId(e.target.value)} style={{ width: '100%', padding: '12px 16px', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--surface-border)', borderRadius: '12px', fontSize: 14, color: '#fff', fontFamily: "'Inter', sans-serif", outline: 'none' }}>
+              <label style={{ display: 'block', fontSize: 11, fontWeight: 700, marginBottom: 10, color: 'var(--t3)', textTransform: 'uppercase', letterSpacing: '1px' }}>Cliente Alvo</label>
+              <select value={clientId} onChange={e => setClientId(e.target.value)} style={{ width: '100%', padding: '14px 18px', background: 'var(--t4)', border: '1px solid var(--surface-border)', borderRadius: '14px', fontSize: 14, color: 'var(--t1)', fontFamily: "'Inter', sans-serif", outline: 'none' }} className="glow-hover">
                 <option value="">Selecione um cliente...</option>
-                {clients.map(c => <option key={c.id} value={c.id} style={{ background: '#0f172a' }}>{c.name}</option>)}
+                {clients.map(c => <option key={c.id} value={c.id} style={{ background: 'var(--bg)', color: 'var(--t1)' }}>{c.name}</option>)}
               </select>
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: window.innerWidth <= 600 ? '1fr' : '1fr 1fr', gap: 24 }}>
              <div>
-              <label style={{ display: 'block', fontSize: 11, fontWeight: 700, marginBottom: 8, color: 'var(--t3)', textTransform: 'uppercase', letterSpacing: '1px' }}>Data de Validade</label>
-              <input type="date" value={validUntil} onChange={e => setValidUntil(e.target.value)} style={{ width: '100%', padding: '12px 16px', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--surface-border)', borderRadius: '12px', fontSize: 14, color: '#fff', fontFamily: "'Inter', sans-serif", outline: 'none' }} />
+              <label style={{ display: 'block', fontSize: 11, fontWeight: 700, marginBottom: 10, color: 'var(--t3)', textTransform: 'uppercase', letterSpacing: '1px' }}>Data de Validade</label>
+              <input type="date" value={validUntil} onChange={e => setValidUntil(e.target.value)} style={{ width: '100%', padding: '14px 18px', background: 'var(--t4)', border: '1px solid var(--surface-border)', borderRadius: '14px', fontSize: 14, color: 'var(--t1)', fontFamily: "'Inter', sans-serif", outline: 'none' }} className="glow-hover" />
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: 11, fontWeight: 700, marginBottom: 8, color: 'var(--t3)', textTransform: 'uppercase', letterSpacing: '1px' }}>Serviço Automático</label>
-              <select onChange={e => handleMainServiceChange(e.target.value)} style={{ width: '100%', padding: '12px 16px', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--accent-glow)', borderRadius: '12px', fontSize: 14, color: 'var(--accent)', fontWeight: 600, fontFamily: "'Inter', sans-serif", outline: 'none' }}>
+              <label style={{ display: 'block', fontSize: 11, fontWeight: 700, marginBottom: 10, color: 'var(--t3)', textTransform: 'uppercase', letterSpacing: '1px' }}>Serviço Automático</label>
+              <select onChange={e => handleMainServiceChange(e.target.value)} style={{ width: '100%', padding: '14px 18px', background: 'var(--t4)', border: '1px solid var(--accent-glow)', borderRadius: '14px', fontSize: 14, color: 'var(--accent)', fontWeight: 700, fontFamily: "'Inter', sans-serif", outline: 'none' }} className="glow-hover">
                 <option value="">(Preencher Manualmente)</option>
-                {services.map(s => <option key={s.id} value={s.id} style={{ background: '#0f172a' }}>{s.name}</option>)}
+                {services.map(s => <option key={s.id} value={s.id} style={{ background: 'var(--bg)', color: 'var(--t1)' }}>{s.name}</option>)}
               </select>
             </div>
           </div>
         </div>
 
         {/* Itens do Orçamento */}
-        <div className="glass" style={{ padding: '32px', borderRadius: '28px', border: '1px solid var(--surface-border)' }}>
+        <div className="glass" style={{ padding: window.innerWidth <= 768 ? '24px' : '32px', borderRadius: '28px', border: '1px solid var(--surface-border)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24 }}>
-            <h3 className="font-heading" style={{ fontSize: 18, fontWeight: 700, color: '#fff' }}>🛠️ Escopo e Itens</h3>
-            <button onClick={addItem} className="glow-hover" style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 16px', borderRadius: '10px', background: 'rgba(99, 102, 241, 0.1)', border: '1px solid var(--accent)', color: 'var(--accent)', fontSize: 12, fontWeight: 700, cursor: 'pointer' }}>
-              <Plus size={14} strokeWidth={3} /> Adicionar Item
+            <h3 className="font-heading" style={{ fontSize: 18, fontWeight: 700, color: 'var(--t1)' }}>🛠️ Escopo e Itens</h3>
+            <button onClick={addItem} className="glow-hover" style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '10px 20px', borderRadius: '12px', background: 'var(--accent-glow)', border: '1px solid var(--accent)', color: 'var(--accent)', fontSize: 13, fontWeight: 700, cursor: 'pointer' }}>
+              <Plus size={16} strokeWidth={3} /> Item
             </button>
           </div>
           
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
             {items.map((item, index) => (
-              <div key={index} className="animate-fade-in" style={{ display: 'flex', gap: 16, alignItems: 'flex-start', padding: '16px', background: 'rgba(255,255,255,0.02)', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.05)' }}>
-                <div style={{ flex: 1 }}>
-                  <select value={item.service_id} onChange={e => handleItemChange(index, 'service_id', e.target.value)} style={{ width: '100%', padding: '10px 12px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--surface-border)', borderRadius: '8px', fontSize: 13, color: '#fff', outline: 'none', marginBottom: 8 }}>
+              <div key={index} className="animate-fade-in" style={{ 
+                display: 'flex', 
+                gap: 20, 
+                alignItems: 'flex-start', 
+                padding: '20px', 
+                background: 'rgba(255,255,255,0.01)', 
+                borderRadius: '20px', 
+                border: '1px solid var(--surface-border)',
+                flexDirection: window.innerWidth <= 800 ? 'column' : 'row'
+              }}>
+                <div style={{ flex: 1, width: '100%' }}>
+                  <select value={item.service_id} onChange={e => handleItemChange(index, 'service_id', e.target.value)} style={{ width: '100%', padding: '12px 14px', background: 'var(--t4)', border: '1px solid var(--surface-border)', borderRadius: '10px', fontSize: 13, color: 'var(--t1)', outline: 'none', marginBottom: 12 }}>
                     <option value="">(Serviço Customizado)</option>
-                    {services.map(s => <option key={s.id} value={s.id} style={{ background: '#0f172a' }}>{s.name}</option>)}
+                    {services.map(s => <option key={s.id} value={s.id} style={{ background: 'var(--bg)', color: 'var(--t1)' }}>{s.name}</option>)}
                   </select>
-                  <input placeholder="Descrição detalhada do item..." value={item.description} onChange={e => handleItemChange(index, 'description', e.target.value)} style={{ width: '100%', padding: '10px 12px', background: 'transparent', border: '1px solid transparent', borderBottomColor: 'var(--surface-border)', fontSize: 13, color: 'var(--t2)', outline: 'none' }} />
+                  <input placeholder="Descrição detalhada do item..." value={item.description} onChange={e => handleItemChange(index, 'description', e.target.value)} style={{ width: '100%', padding: '12px 14px', background: 'transparent', border: '1px solid transparent', borderBottomColor: 'var(--surface-border)', fontSize: 13, color: 'var(--t2)', outline: 'none' }} />
                 </div>
-                <div style={{ width: 70 }}>
-                  <label style={{ display: 'block', fontSize: 10, fontWeight: 700, marginBottom: 4, color: 'var(--t3)' }}>QTD</label>
-                  <input type="number" min="1" value={item.quantity} onChange={e => handleItemChange(index, 'quantity', e.target.value)} style={{ width: '100%', padding: '10px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--surface-border)', borderRadius: '8px', fontSize: 13, color: '#fff', textAlign: 'center' }} />
-                </div>
-                <div style={{ width: 130 }}>
-                  <label style={{ display: 'block', fontSize: 10, fontWeight: 700, marginBottom: 4, color: 'var(--t3)' }}>PREÇO UNIT.</label>
-                  <input type="text" value={maskCurrency(item.unit_price)} onChange={e => handleItemChange(index, 'unit_price', parseCurrency(e.target.value))} style={{ width: '100%', padding: '10px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--surface-border)', borderRadius: '8px', fontSize: 13, color: '#fff', textAlign: 'right' }} />
-                </div>
-                <div style={{ width: 130 }}>
-                  <label style={{ display: 'block', fontSize: 10, fontWeight: 700, marginBottom: 4, color: 'var(--t3)' }}>SUBTOTAL</label>
-                  <div style={{ width: '100%', padding: '10px', fontSize: 14, fontWeight: 700, color: 'var(--accent)', textAlign: 'right' }}>
-                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.subtotal)}
+                <div style={{ display: 'flex', gap: 16, width: window.innerWidth <= 800 ? '100%' : 'auto' }}>
+                  <div style={{ width: 80 }}>
+                    <label style={{ display: 'block', fontSize: 10, fontWeight: 700, marginBottom: 6, color: 'var(--t3)', textTransform: 'uppercase' }}>QTD</label>
+                    <input type="number" min="1" value={item.quantity} onChange={e => handleItemChange(index, 'quantity', e.target.value)} style={{ width: '100%', padding: '12px', background: 'var(--t4)', border: '1px solid var(--surface-border)', borderRadius: '10px', fontSize: 13, color: 'var(--t1)', textAlign: 'center' }} />
                   </div>
+                  <div style={{ width: 140 }}>
+                    <label style={{ display: 'block', fontSize: 10, fontWeight: 700, marginBottom: 6, color: 'var(--t3)', textTransform: 'uppercase' }}>UNIT.</label>
+                    <input type="text" value={maskCurrency(item.unit_price)} onChange={e => handleItemChange(index, 'unit_price', parseCurrency(e.target.value))} style={{ width: '100%', padding: '12px', background: 'var(--t4)', border: '1px solid var(--surface-border)', borderRadius: '10px', fontSize: 13, color: 'var(--t1)', textAlign: 'right' }} />
+                  </div>
+                  <div style={{ flex: 1, minWidth: 100 }}>
+                    <label style={{ display: 'block', fontSize: 10, fontWeight: 700, marginBottom: 6, color: 'var(--t3)', textTransform: 'uppercase' }}>SUBTOTAL</label>
+                    <div style={{ padding: '12px 0', fontSize: 15, fontWeight: 800, color: 'var(--accent)', textAlign: 'right' }}>
+                      {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(item.subtotal)}
+                    </div>
+                  </div>
+                  <button onClick={() => removeItem(index)} className="glow-hover" style={{ marginTop: 20, padding: 12, background: 'rgba(239, 68, 68, 0.05)', border: 'none', borderRadius: '12px', color: 'var(--red)', cursor: 'pointer' }}>
+                    <Trash2 size={18} />
+                  </button>
                 </div>
-                <button onClick={() => removeItem(index)} style={{ marginTop: 24, padding: 8, background: 'rgba(239, 68, 68, 0.1)', border: 'none', borderRadius: '8px', color: 'var(--red)', cursor: 'pointer' }}>
-                  <Trash2 size={16} />
-                </button>
               </div>
             ))}
           </div>
         </div>
 
         {/* Notas */}
-        <div className="glass" style={{ padding: '32px', borderRadius: '28px', border: '1px solid var(--surface-border)' }}>
-           <h3 className="font-heading" style={{ fontSize: 18, fontWeight: 700, marginBottom: 16, color: '#fff' }}>📝 Notas Adicionais</h3>
-           <textarea placeholder="Termos de pagamento, prazos de entrega ou observações importantes..." value={notes} onChange={e => setNotes(e.target.value)} style={{ width: '100%', padding: '16px', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--surface-border)', borderRadius: '16px', fontSize: 14, color: '#fff', fontFamily: "'Inter', sans-serif", outline: 'none', minHeight: 120, resize: 'vertical' }} onFocus={e => e.target.style.borderColor = 'var(--accent)'} onBlur={e => e.target.style.borderColor = 'var(--surface-border)'} />
+        <div className="glass" style={{ padding: window.innerWidth <= 768 ? '24px' : '32px', borderRadius: '28px', border: '1px solid var(--surface-border)' }}>
+           <h3 className="font-heading" style={{ fontSize: 18, fontWeight: 700, marginBottom: 16, color: 'var(--t1)' }}>📝 Notas Adicionais</h3>
+           <textarea placeholder="Termos de pagamento, prazos de entrega ou observações importantes..." value={notes} onChange={e => setNotes(e.target.value)} style={{ width: '100%', padding: '18px', background: 'var(--t4)', border: '1px solid var(--surface-border)', borderRadius: '16px', fontSize: 14, color: 'var(--t1)', fontFamily: "'Inter', sans-serif", outline: 'none', minHeight: 140, resize: 'vertical' }} className="glow-hover" />
         </div>
       </div>
 
       {/* Sidebar de Resumo */}
-      <div style={{ width: 360, display: 'flex', flexDirection: 'column', gap: 24, position: 'sticky', top: 24 }}>
-        <div className="glass" style={{ padding: '32px', borderRadius: '28px', border: '1px solid var(--surface-border)', boxShadow: 'var(--card-shadow)' }}>
-          <h3 className="font-heading" style={{ fontSize: 18, fontWeight: 700, marginBottom: 24, color: '#fff' }}>Resumo Final</h3>
+      <div style={{ width: window.innerWidth <= 1100 ? '100%' : 380, display: 'flex', flexDirection: 'column', gap: 24, position: window.innerWidth <= 1100 ? 'static' : 'sticky', top: 24 }}>
+        <div className="glass animate-fade-in" style={{ padding: '32px', borderRadius: '28px', border: '1px solid var(--surface-border)', boxShadow: 'var(--card-shadow)' }}>
+          <h3 className="font-heading" style={{ fontSize: 20, fontWeight: 700, marginBottom: 24, color: 'var(--t1)' }}>Resumo Estratégico</h3>
           
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16, fontSize: 14, color: 'var(--t2)' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16, fontSize: 14, color: 'var(--t2)', fontWeight: 500 }}>
             <span>Subtotal Bruto</span>
-            <span style={{ color: '#fff', fontWeight: 600 }}>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(subtotal)}</span>
+            <span style={{ color: 'var(--t1)', fontWeight: 700 }}>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(subtotal)}</span>
           </div>
           
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, fontSize: 14, color: 'var(--t2)' }}>
-            <span>Desconto Aplicado</span>
-            <input type="text" value={maskCurrency(discount)} onChange={e => setDiscount(parseCurrency(e.target.value))} style={{ width: 100, padding: '8px 12px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--surface-border)', borderRadius: '10px', fontSize: 14, color: 'var(--green)', fontWeight: 700, textAlign: 'right', outline: 'none' }} />
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 24, fontSize: 14, color: 'var(--t2)', fontWeight: 500 }}>
+            <span>Desconto</span>
+            <input type="text" value={maskCurrency(discount)} onChange={e => setDiscount(parseCurrency(e.target.value))} style={{ width: 120, padding: '10px 14px', background: 'var(--t4)', border: '1px solid var(--surface-border)', borderRadius: '12px', fontSize: 14, color: 'var(--green)', fontWeight: 800, textAlign: 'right', outline: 'none' }} className="glow-hover" />
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 24, paddingTop: 24, borderTop: '1px solid var(--surface-border)', marginBottom: 32 }}>
-            <span style={{ fontSize: 16, fontWeight: 600, color: '#fff' }}>Total Líquido</span>
-            <span style={{ fontSize: 24, fontWeight: 800, color: 'var(--accent)', letterSpacing: '-1px' }}>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total)}</span>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 24, paddingTop: 24, borderTop: '2px dashed var(--surface-border)', marginBottom: 32 }}>
+            <span style={{ fontSize: 16, fontWeight: 700, color: 'var(--t1)' }}>Total Líquido</span>
+            <div style={{ textAlign: 'right' }}>
+              <span style={{ fontSize: 28, fontWeight: 900, color: 'var(--accent)', letterSpacing: '-1px' }}>{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(total)}</span>
+              <div style={{ fontSize: 11, color: 'var(--t3)', marginTop: 4, fontWeight: 700, textTransform: 'uppercase' }}>Pronto para envio</div>
+            </div>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-            <label style={{ fontSize: 11, fontWeight: 700, color: 'var(--t3)', textTransform: 'uppercase' }}>Status da Proposta</label>
-            <select value={status} onChange={e => setStatus(e.target.value)} style={{ width: '100%', padding: '12px 16px', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--surface-border)', borderRadius: '12px', fontSize: 14, color: '#fff', outline: 'none', marginBottom: 12 }}>
-              <option value="rascunho" style={{ background: '#0f172a' }}>Rascunho</option>
-              <option value="enviado" style={{ background: '#0f172a' }}>Enviado</option>
-              <option value="aprovado" style={{ background: '#0f172a' }}>Aprovado</option>
-              <option value="recusado" style={{ background: '#0f172a' }}>Recusado</option>
-            </select>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+            <div>
+              <label style={{ fontSize: 11, fontWeight: 700, color: 'var(--t3)', textTransform: 'uppercase', display: 'block', marginBottom: 10, letterSpacing: '1px' }}>Status Vital</label>
+              <select value={status} onChange={e => setStatus(e.target.value)} style={{ width: '100%', padding: '14px 18px', background: 'var(--t4)', border: '1px solid var(--surface-border)', borderRadius: '14px', fontSize: 14, color: 'var(--t1)', outline: 'none', fontWeight: 600 }} className="glow-hover">
+                <option value="rascunho" style={{ background: 'var(--bg)' }}>Rascunho</option>
+                <option value="enviado" style={{ background: 'var(--bg)' }}>Enviado</option>
+                <option value="aprovado" style={{ background: 'var(--bg)' }}>Aprovado</option>
+                <option value="recusado" style={{ background: 'var(--bg)' }}>Recusado</option>
+              </select>
+            </div>
 
-            <button onClick={saveQuote} disabled={saving} className="glow-hover" style={{ width: '100%', padding: '16px', borderRadius: '14px', background: 'linear-gradient(135deg, var(--accent) 0%, #a855f7 100%)', border: 'none', color: '#fff', fontSize: 15, fontWeight: 700, cursor: saving ? 'not-allowed' : 'pointer', boxShadow: '0 4px 15px var(--accent-glow)' }}>
-              {saving ? 'Publicando...' : 'Salvar e Publicar'}
+            <button onClick={saveQuote} disabled={saving} className="glow-hover holographic-active" style={{ width: '100%', padding: '18px', borderRadius: '16px', background: 'linear-gradient(135deg, var(--accent) 0%, #a855f7 100%)', border: 'none', color: '#fff', fontSize: 16, fontWeight: 800, cursor: saving ? 'not-allowed' : 'pointer', boxShadow: '0 10px 25px var(--accent-glow)' }}>
+              {saving ? 'PROCESSANDO...' : 'FINALIZAR E PUBLICAR'}
             </button>
             
-            <button onClick={generatePDF} className="glow-hover" style={{ width: '100%', padding: '14px', borderRadius: '14px', background: 'transparent', border: '1px solid var(--surface-border)', color: '#fff', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>
-              Visualizar Prévia PDF
+            <button onClick={generatePDF} className="glow-hover" style={{ width: '100%', padding: '14px', borderRadius: '16px', background: 'transparent', border: '1px solid var(--surface-border)', color: 'var(--t1)', fontSize: 14, fontWeight: 700, cursor: 'pointer' }}>
+              VISUALIZAR DOCUMENTO
             </button>
           </div>
         </div>

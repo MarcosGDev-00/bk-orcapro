@@ -12,33 +12,36 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div style={{ position: 'fixed', inset: 0, zIndex: 200, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }}>
+    <div style={{ position: 'fixed', inset: 0, zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '16px' }}>
       <div 
-        style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(8px)' }} 
+        style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(10px)' }} 
         onClick={onClose} 
       />
       <div 
-        className="glass animate-fade-in" 
+        className="animate-fade-in shadow-2xl" 
         style={{ 
           position: 'relative', 
           width: '100%', 
           maxWidth: 600, 
           borderRadius: '28px', 
-          boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)', 
+          background: 'var(--modal-bg)',
+          backdropFilter: 'blur(30px)',
+          WebkitBackdropFilter: 'blur(30px)',
           display: 'flex', 
           flexDirection: 'column', 
           maxHeight: '90vh',
           overflow: 'hidden',
-          border: '1px solid var(--surface-border)'
+          border: '1px solid var(--surface-border)',
+          boxShadow: 'var(--card-shadow)'
         }}
       >
-        <div style={{ padding: '24px 32px', borderBottom: '1px solid var(--surface-border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <h2 className="font-heading" style={{ fontSize: 20, fontWeight: 700, color: '#fff' }}>{title}</h2>
+        <div style={{ padding: '24px 32px', borderBottom: '1px solid var(--surface-border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(255,255,255,0.02)' }}>
+          <h2 className="font-heading" style={{ fontSize: 20, fontWeight: 700, color: 'var(--t1)' }}>{title}</h2>
           <button 
             onClick={onClose} 
             className="glow-hover"
             style={{ 
-              background: 'rgba(255,255,255,0.05)', 
+              background: 'var(--t4)', 
               border: 'none', 
               cursor: 'pointer', 
               padding: 8, 
@@ -46,7 +49,8 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
               color: 'var(--t2)',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              transition: 'all 0.2s'
             }}
           >
             <X size={20} />

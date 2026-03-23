@@ -15,15 +15,20 @@ export function StatusBadge({ status }: StatusBadgeProps) {
 
   return (
     <span style={{ 
-      display: 'inline-block',
-      padding: '4px 10px', 
-      borderRadius: 9999, 
-      fontSize: 12, 
-      fontWeight: 500,
+      display: 'inline-flex',
+      alignItems: 'center',
+      gap: 6,
+      padding: '4px 12px', 
+      borderRadius: '8px', 
+      fontSize: 11, 
+      fontWeight: 800,
       background: current.bg,
       color: current.color,
-      textTransform: 'capitalize'
+      textTransform: 'uppercase',
+      letterSpacing: '0.5px',
+      border: `1px solid ${current.color}15`
     }}>
+      <div style={{ width: 6, height: 6, borderRadius: '50%', background: current.color, boxShadow: `0 0 8px ${current.color}` }} />
       {status}
     </span>
   );
