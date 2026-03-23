@@ -104,21 +104,23 @@ export function Layout() {
           onClick={() => !mobileMenuOpen && setExpanded(!expanded)}
           className="glow-hover desktop-only"
           style={{ 
-            padding: '32px 24px', 
+            padding: '32px 20px', 
             display: 'flex', 
             alignItems: 'center', 
             justifyContent: expanded ? 'space-between' : 'center', 
-            gap: 16, 
+            gap: 12, 
             flexShrink: 0,
             cursor: 'pointer',
-            transition: 'all 0.3s'
+            transition: 'all 0.3s',
+            borderBottom: '1px solid var(--surface-border)',
+            marginBottom: '12px'
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16, minWidth: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 }}>
             <div style={{ 
-              width: 36, 
-              height: 36, 
-              borderRadius: '12px', 
+              width: 32, 
+              height: 32, 
+              borderRadius: '10px', 
               background: 'linear-gradient(135deg, var(--accent) 0%, #a855f7 100%)', 
               display: 'flex', 
               alignItems: 'center', 
@@ -126,11 +128,27 @@ export function Layout() {
               boxShadow: '0 0 15px var(--accent-glow)',
               flexShrink: 0
             }}>
-              <FileText size={20} color="#fff" />
+              <FileText size={18} color="#fff" />
             </div>
-            {expanded && <span className="font-heading" style={{ fontWeight: 800, fontSize: 18, letterSpacing: '-0.5px', color: isDark ? '#fff' : 'var(--t1)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>OrçaPro</span>}
+            {expanded && (
+              <span className="font-heading" style={{ 
+                fontWeight: 800, 
+                fontSize: 18, 
+                letterSpacing: '-0.5px', 
+                color: isDark ? '#fff' : 'var(--t1)',
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis'
+              }}>
+                OrçaPro
+              </span>
+            )}
           </div>
-          {expanded && <ChevronLeft size={16} style={{ color: 'var(--t3)' }} />}
+          {expanded && (
+            <div style={{ color: 'var(--t3)', display: 'flex', alignItems: 'center' }}>
+              <ChevronLeft size={16} strokeWidth={3} />
+            </div>
+          )}
         </div>
 
         {/* Header for Mobile only (separate for clarity) */}
