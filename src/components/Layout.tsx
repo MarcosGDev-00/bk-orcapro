@@ -102,7 +102,7 @@ export function Layout() {
         {/* Toggle Expansão Desktop */}
         <button 
           onClick={() => setExpanded(!expanded)}
-          className="desktop-only"
+          className="desktop-only shadow-lg"
           style={{
             position: 'absolute',
             right: -18,
@@ -119,22 +119,19 @@ export function Layout() {
             zIndex: 110,
             border: '1px solid var(--surface-border)',
             background: 'var(--surface)',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
             backdropFilter: 'blur(10px)',
             WebkitBackdropFilter: 'blur(10px)',
-            transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
+            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+            outline: 'none'
           }}
         >
-          <div style={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center',
-            transform: expanded ? 'translateX(3px)' : 'translateX(-3px)',
-            width: '100%',
-            height: '100%'
-          }}>
-            {expanded ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
-          </div>
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block' }}>
+            {expanded ? (
+              <path d="M20 12L14 18L20 24" /> 
+            ) : (
+              <path d="M16 12L22 18L16 24" />
+            )}
+          </svg>
         </button>
 
         <div style={{ padding: '32px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexShrink: 0 }}>
