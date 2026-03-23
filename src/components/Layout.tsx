@@ -102,13 +102,13 @@ export function Layout() {
         {/* Toggle Expansão Desktop */}
         <button 
           onClick={() => setExpanded(!expanded)}
-          className="glow-hover desktop-only"
+          className="desktop-only"
           style={{
             position: 'absolute',
-            right: -16,
+            right: -18,
             top: 48,
-            width: 32,
-            height: 32,
+            width: 36,
+            height: 36,
             borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
@@ -119,15 +119,22 @@ export function Layout() {
             zIndex: 110,
             border: '1px solid var(--surface-border)',
             background: 'var(--surface)',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
             backdropFilter: 'blur(10px)',
-            WebkitBackdropFilter: 'blur(10px)'
+            WebkitBackdropFilter: 'blur(10px)',
+            transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)'
           }}
         >
-          {expanded ? 
-            <ChevronLeft size={16} style={{ marginLeft: 2 }} /> : 
-            <ChevronRight size={16} style={{ marginLeft: -2 }} />
-          }
+          <div style={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            transform: expanded ? 'translateX(3px)' : 'translateX(-3px)',
+            width: '100%',
+            height: '100%'
+          }}>
+            {expanded ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
+          </div>
         </button>
 
         <div style={{ padding: '32px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexShrink: 0 }}>
