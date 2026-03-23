@@ -102,7 +102,7 @@ export function Layout() {
         {/* Toggle Expansão Desktop */}
         <button 
           onClick={() => setExpanded(!expanded)}
-          className="glass glow-hover desktop-only"
+          className="glow-hover desktop-only"
           style={{
             position: 'absolute',
             right: -16,
@@ -119,12 +119,14 @@ export function Layout() {
             zIndex: 110,
             border: '1px solid var(--surface-border)',
             background: 'var(--surface)',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+            backdropFilter: 'blur(10px)',
+            WebkitBackdropFilter: 'blur(10px)'
           }}
         >
           {expanded ? 
-            <ChevronLeft size={16} style={{ marginLeft: -1 }} /> : 
-            <ChevronRight size={16} style={{ marginLeft: 1 }} />
+            <ChevronLeft size={16} style={{ marginLeft: 2 }} /> : 
+            <ChevronRight size={16} style={{ marginLeft: -2 }} />
           }
         </button>
 
