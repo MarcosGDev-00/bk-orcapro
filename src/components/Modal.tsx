@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 
 interface ModalProps {
@@ -11,17 +12,18 @@ interface ModalProps {
 export function Modal({ isOpen, onClose, title, children }: ModalProps) {
   if (!isOpen) return null;
 
-  return (
+  const modalContent = (
     <div style={{ 
       position: 'fixed', 
       inset: 0, 
-      zIndex: 1000, 
+      zIndex: 9999, 
       display: 'flex', 
       padding: window.innerWidth <= 768 ? '0' : '40px 16px',
       overflowY: 'auto',
-      background: 'rgba(0,0,0,0.6)',
+      background: 'rgba(0,0,0,0.7)',
       backdropFilter: 'blur(10px)',
-      WebkitBackdropFilter: 'blur(10px)'
+      WebkitBackdropFilter: 'blur(10px)',
+      pointerEvents: 'auto'
     }}>
       <div 
         style={{ position: 'fixed', inset: 0, zIndex: -1 }} 
@@ -64,10 +66,12 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
             <X size={20} strokeWidth={2.5} />
           </button>
         </div>
-        <div style={{ padding: window.innerWidth <= 768 ? '24px' : '40px', overflowY: 'visible' }}>
+        <div style={{ padding: window.innerWidth <= 768 ? '24px' : '40px' }}>
           {children}
         </div>
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 }
