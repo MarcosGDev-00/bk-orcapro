@@ -10,7 +10,7 @@ export function Layout() {
   const [expanded, setExpanded] = useState(window.innerWidth > 1024);
   const [isDark, setIsDark] = useState(() => {
     const saved = localStorage.getItem('aura-theme');
-    return saved ? saved === 'dark' : true;
+    return saved ? saved === 'dark' : false; // Default to Light Mode
   });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [email, setEmail] = useState('');
@@ -88,15 +88,14 @@ export function Layout() {
 
       {/* Sidebar Flutuante */}
       <aside className={`glass ${mobileMenuOpen ? 'mobile-sidebar-open' : ''}`} style={{
-        margin: '16px',
-        borderRadius: '24px',
+        margin: window.innerWidth <= 1024 ? '0' : '16px',
+        borderRadius: window.innerWidth <= 1024 ? '0 24px 24px 0' : '24px',
         width: expanded ? 240 : 80,
         transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
         display: 'flex',
         flexDirection: 'column',
-        position: window.innerWidth <= 1024 ? 'fixed' : 'relative',
-        left: window.innerWidth <= 1024 && !mobileMenuOpen ? -320 : 0,
-        height: 'calc(100vh - 32px)',
+        position: 'relative', // Handled by CSS for mobile
+        height: window.innerWidth <= 1024 ? '100vh' : 'calc(100vh - 32px)',
         boxShadow: 'var(--card-shadow)',
         zIndex: 150
       }}>
@@ -208,12 +207,14 @@ export function Layout() {
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
             <button 
               onClick={() => setMobileMenuOpen(true)}
-              className="mobile-only glass"
-              style={{ padding: 8, borderRadius: 10, display: 'none', border: '1px solid var(--surface-border)' }}
+              className="mobile-only glass glow-hover"
+              style={{ padding: 10, borderRadius: 12, display: 'flex', border: '1px solid var(--surface-border)', cursor: 'pointer', background: 'var(--surface)' }}
             >
-              <div style={{ width: 20, height: 2, background: 'var(--t1)', marginBottom: 4 }} />
-              <div style={{ width: 14, height: 2, background: 'var(--t1)', marginBottom: 4 }} />
-              <div style={{ width: 18, height: 2, background: 'var(--t1)' }} />
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                <div style={{ width: 22, height: 2, background: 'var(--t1)', borderRadius: 2 }} />
+                <div style={{ width: 16, height: 2, background: 'var(--t1)', borderRadius: 2 }} />
+                <div style={{ width: 20, height: 2, background: 'var(--t1)', borderRadius: 2 }} />
+              </div>
             </button>
             <div className="desktop-only">
               <h1 className="animate-fade-in" style={{ fontSize: 28, fontWeight: 700, letterSpacing: '-1.5px', color: 'var(--t1)' }}>{pageTitle}</h1>

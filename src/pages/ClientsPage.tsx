@@ -97,7 +97,7 @@ export function ClientsPage() {
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={formData.id ? 'Editar Cliente' : 'Novo Cliente'}>
         <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
-          <div style={{ display: 'grid', gridTemplateColumns: window.innerWidth <= 600 ? '1fr' : '1fr 1fr', gap: 24 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: window.innerWidth <= 768 ? '1fr' : '1fr 1fr', gap: 24 }}>
             {[
               { key: 'name', label: 'Nome Completo *', required: true, full: true },
               { key: 'company', label: 'Nome da Empresa' },
@@ -106,7 +106,7 @@ export function ClientsPage() {
               { key: 'phone', label: 'WhatsApp / Telefone' },
               { key: 'address', label: 'Endereço Completo', full: true },
             ].map(field => (
-              <div key={field.key} style={{ gridColumn: field.full || window.innerWidth <= 600 ? 'span 1' : 'auto', gridColumnEnd: field.full && window.innerWidth > 600 ? 'span 2' : 'auto' }}>
+              <div key={field.key} style={{ gridColumn: field.full && window.innerWidth > 768 ? 'span 2' : 'span 1' }}>
                 <label style={{ display: 'block', fontSize: 11, fontWeight: 700, marginBottom: 10, color: 'var(--t3)', textTransform: 'uppercase', letterSpacing: '1px' }}>{field.label}</label>
                 <input 
                   type={field.type || 'text'}
@@ -118,19 +118,8 @@ export function ClientsPage() {
                     if (field.key === 'document') val = maskCpfCnpj(val);
                     setFormData({ ...formData, [field.key]: val });
                   }}
-                  style={{ 
-                    width: '100%', 
-                    padding: '14px 18px', 
-                    background: 'var(--t4)', 
-                    border: '1px solid var(--surface-border)', 
-                    borderRadius: '14px', 
-                    fontSize: 14, 
-                    color: 'var(--t1)', 
-                    fontFamily: "'Inter', sans-serif", 
-                    outline: 'none',
-                    transition: 'all 0.2s'
-                  }}
                   className="glow-hover"
+                  style={{ width: '100%', padding: '14px 18px', borderRadius: '14px', fontSize: 14, fontFamily: "'Inter', sans-serif", outline: 'none' }}
                 />
               </div>
             ))}

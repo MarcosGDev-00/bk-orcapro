@@ -26,20 +26,20 @@
 
 .light-theme {
   /* Aura Light - Snow Glass */
-  --bg: #f8fafc;
-  --surface: rgba(255, 255, 255, 0.7);
-  --surface-border: rgba(0, 0, 0, 0.05);
+  --bg: #fdfdfd;
+  --surface: rgba(255, 255, 255, 0.85);
+  --surface-border: rgba(0, 0, 0, 0.12);
   --accent: #4f46e5;
-  --accent-glow: rgba(79, 70, 229, 0.1);
+  --accent-glow: rgba(79, 70, 229, 0.15);
   --t1: #0f172a;
-  --t2: #475569;
-  --t3: #94a3b8;
-  --t4: #e2e8f0;
+  --t2: #334155;
+  --t3: #64748b;
+  --t4: #f1f5f9;
   
-  --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
-  --modal-bg: rgba(255, 255, 255, 0.95);
+  --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+  --modal-bg: #ffffff;
   
-  background: radial-gradient(circle at 50% 0%, #ffffff 0%, #f1f5f9 100%) !important;
+  background: radial-gradient(circle at 50% 0%, #ffffff 0%, #f8fafc 100%) !important;
 }
 
 * { 
@@ -135,7 +135,55 @@ input:focus, select:focus, textarea:focus {
   outline: none;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .desktop-only { display: none !important; }
-  .mobile-only { display: block !important; }
+  .mobile-only { display: flex !important; }
+  
+  aside {
+    position: fixed !important;
+    left: -320px !important;
+    margin: 0 !important;
+    height: 100vh !important;
+    border-radius: 0 24px 24px 0 !important;
+    box-shadow: 20px 0 60px rgba(0,0,0,0.5) !important;
+  }
+  
+  aside.mobile-sidebar-open {
+    left: 0 !important;
+  }
+  
+  main {
+    padding: 0 !important;
+  }
+  
+  header {
+    padding: 0 20px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .animate-fade-in {
+    padding: 0 16px !important;
+  }
+}
+
+input, select, textarea {
+  border: 1px solid var(--surface-border);
+  background: var(--t4);
+  color: var(--t1);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.light-theme input, .light-theme select, .light-theme textarea {
+  border-color: rgba(0, 0, 0, 0.1);
+  background: #ffffff;
+}
+
+input:hover, select:hover, textarea:hover {
+  border-color: var(--accent);
+}
+
+.light-theme .glass {
+  background: rgba(255, 255, 255, 0.82);
+  border: 1px solid rgba(0, 0, 0, 0.08);
 }

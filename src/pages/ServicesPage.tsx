@@ -116,7 +116,7 @@ export function ServicesPage() {
               className="glow-hover"
             />
           </div>
-          <div style={{ display: 'flex', gap: 24, flexDirection: window.innerWidth <= 600 ? 'column' : 'row' }}>
+          <div style={{ display: 'flex', gap: 24, flexDirection: window.innerWidth <= 768 ? 'column' : 'row' }}>
             <div style={{ flex: 1 }}>
               <label style={{ display: 'block', fontSize: 11, fontWeight: 700, marginBottom: 10, color: 'var(--t3)', textTransform: 'uppercase', letterSpacing: '1px' }}>Preço Unitário *</label>
               <input 
@@ -124,8 +124,8 @@ export function ServicesPage() {
                 required 
                 value={maskCurrency(formData.unit_price)} 
                 onChange={e => setFormData({ ...formData, unit_price: parseCurrency(e.target.value) })} 
-                style={{ width: '100%', padding: '14px 18px', background: 'var(--t4)', border: '1px solid var(--surface-border)', borderRadius: '14px', fontSize: 14, color: 'var(--t1)', fontFamily: "'Inter', sans-serif", outline: 'none' }} 
                 className="glow-hover"
+                style={{ width: '100%', padding: '14px 18px', borderRadius: '14px', fontSize: 14, fontFamily: "'Inter', sans-serif", outline: 'none' }}
               />
             </div>
             <div style={{ flex: 1 }}>
@@ -133,8 +133,8 @@ export function ServicesPage() {
               <input 
                 value={formData.unit || 'un'} 
                 onChange={e => setFormData({ ...formData, unit: e.target.value })} 
-                style={{ width: '100%', padding: '14px 18px', background: 'var(--t4)', border: '1px solid var(--surface-border)', borderRadius: '14px', fontSize: 14, color: 'var(--t1)', fontFamily: "'Inter', sans-serif", outline: 'none' }} 
                 className="glow-hover"
+                style={{ width: '100%', padding: '14px 18px', borderRadius: '14px', fontSize: 14, fontFamily: "'Inter', sans-serif", outline: 'none' }}
               />
             </div>
           </div>
