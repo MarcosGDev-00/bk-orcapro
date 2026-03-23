@@ -17,13 +17,11 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
       inset: 0, 
       zIndex: 1000, 
       display: 'flex', 
-      flexDirection: 'column',
       padding: window.innerWidth <= 768 ? '0' : '40px 16px',
       overflowY: 'auto',
       background: 'rgba(0,0,0,0.6)',
       backdropFilter: 'blur(10px)',
-      WebkitBackdropFilter: 'blur(10px)',
-      alignItems: 'center'
+      WebkitBackdropFilter: 'blur(10px)'
     }}>
       <div 
         style={{ position: 'fixed', inset: 0, zIndex: -1 }} 
@@ -42,8 +40,7 @@ export function Modal({ isOpen, onClose, title, children }: ModalProps) {
           margin: window.innerWidth <= 768 ? 'auto 0 0 0' : 'auto',
           border: '1px solid var(--surface-border)',
           boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
-          flexShrink: 0,
-          maxHeight: window.innerWidth <= 768 ? '92vh' : 'none'
+          flexShrink: 0
         }}
       >
         <div style={{ padding: '24px 32px', borderBottom: '1px solid var(--surface-border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'rgba(255,255,255,0.01)', flexShrink: 0 }}>

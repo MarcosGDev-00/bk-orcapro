@@ -97,8 +97,7 @@ export function Layout() {
         position: 'relative',
         height: window.innerWidth <= 1024 ? '100vh' : 'calc(100vh - 32px)',
         boxShadow: 'var(--card-shadow)',
-        zIndex: 150,
-        overflow: 'hidden'
+        zIndex: 150
       }}>
         {/* Toggle Expansão Desktop */}
         <button 
