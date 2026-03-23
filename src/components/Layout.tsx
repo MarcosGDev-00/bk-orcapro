@@ -99,42 +99,21 @@ export function Layout() {
         boxShadow: 'var(--card-shadow)',
         zIndex: 150
       }}>
-        {/* Toggle Expansão Desktop */}
-        <button 
-          onClick={() => setExpanded(!expanded)}
-          className="desktop-only shadow-lg"
-          style={{
-            position: 'absolute',
-            right: -18,
-            top: 48,
-            width: 36,
-            height: 36,
-            borderRadius: '50%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+        {/* Sidebar Header - Clickable for Expansion */}
+        <div 
+          onClick={() => !mobileMenuOpen && setExpanded(!expanded)}
+          className="glow-hover desktop-only"
+          style={{ 
+            padding: '32px 24px', 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: expanded ? 'space-between' : 'center', 
+            gap: 16, 
+            flexShrink: 0,
             cursor: 'pointer',
-            padding: 0,
-            color: 'var(--t1)',
-            zIndex: 110,
-            border: '1px solid var(--surface-border)',
-            background: 'var(--surface)',
-            backdropFilter: 'blur(10px)',
-            WebkitBackdropFilter: 'blur(10px)',
-            transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-            outline: 'none'
+            transition: 'all 0.3s'
           }}
         >
-          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block' }}>
-            {expanded ? (
-              <path d="M20 12L14 18L20 24" /> 
-            ) : (
-              <path d="M16 12L22 18L16 24" />
-            )}
-          </svg>
-        </button>
-
-        <div style={{ padding: '32px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexShrink: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16, minWidth: 0 }}>
             <div style={{ 
               width: 36, 
@@ -149,18 +128,36 @@ export function Layout() {
             }}>
               <FileText size={20} color="#fff" />
             </div>
-            {(expanded || mobileMenuOpen) && <span className="font-heading" style={{ fontWeight: 800, fontSize: 18, letterSpacing: '-0.5px', color: isDark ? '#fff' : 'var(--t1)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>OrçaPro</span>}
+            {expanded && <span className="font-heading" style={{ fontWeight: 800, fontSize: 18, letterSpacing: '-0.5px', color: isDark ? '#fff' : 'var(--t1)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>OrçaPro</span>}
           </div>
-          
-          {mobileMenuOpen && (
-            <button 
-              onClick={() => setMobileMenuOpen(false)}
-              className="glass"
-              style={{ width: 36, height: 36, borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--surface-border)', color: 'var(--t2)', cursor: 'pointer', flexShrink: 0 }}
-            >
-              <ChevronLeft size={20} strokeWidth={3} />
-            </button>
-          )}
+          {expanded && <ChevronLeft size={16} style={{ color: 'var(--t3)' }} />}
+        </div>
+
+        {/* Header for Mobile only (separate for clarity) */}
+        <div 
+          className="mobile-only"
+          style={{ 
+            padding: '32px 24px', 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'space-between', 
+            gap: 16, 
+            flexShrink: 0 
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: 16, minWidth: 0 }}>
+            <div style={{ width: 36, height: 36, borderRadius: '12px', background: 'linear-gradient(135deg, var(--accent) 0%, #a855f7 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+              <FileText size={20} color="#fff" />
+            </div>
+            <span className="font-heading" style={{ fontWeight: 800, fontSize: 18, color: isDark ? '#fff' : 'var(--t1)' }}>OrçaPro</span>
+          </div>
+          <button 
+            onClick={() => setMobileMenuOpen(false)}
+            className="glass"
+            style={{ width: 36, height: 36, borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid var(--surface-border)', color: 'var(--t2)', cursor: 'pointer', flexShrink: 0 }}
+          >
+            <ChevronLeft size={20} strokeWidth={3} />
+          </button>
         </div>
 
         <nav style={{ flex: 1, padding: '12px', overflowY: 'auto', overflowX: 'hidden' }}>
