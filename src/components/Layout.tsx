@@ -105,10 +105,10 @@ export function Layout() {
           className="glass glow-hover desktop-only"
           style={{
             position: 'absolute',
-            right: -14,
+            right: -16,
             top: 48,
-            width: 28,
-            height: 28,
+            width: 32,
+            height: 32,
             borderRadius: '50%',
             display: 'flex',
             alignItems: 'center',
@@ -122,7 +122,10 @@ export function Layout() {
             boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
           }}
         >
-          {expanded ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
+          {expanded ? 
+            <ChevronLeft size={16} style={{ marginLeft: -1 }} /> : 
+            <ChevronRight size={16} style={{ marginLeft: 1 }} />
+          }
         </button>
 
         <div style={{ padding: '32px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexShrink: 0 }}>
