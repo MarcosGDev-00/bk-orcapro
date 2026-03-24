@@ -43,6 +43,9 @@ export function ProfilePage() {
         if (uploadError.message.includes('not found')) {
           throw new Error('Bucket "logos" não encontrado. Crie um bucket público chamado "logos" no seu painel do Supabase.');
         }
+        if (uploadError.message.includes('row-level security')) {
+          throw new Error('Acesso negado (RLS). Você precisa adicionar uma política de "INSERT" no bucket "logos" no painel do Supabase.');
+        }
         throw uploadError;
       }
 
