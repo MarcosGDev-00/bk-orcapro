@@ -10,6 +10,7 @@ import { QuotesPage } from './pages/QuotesPage';
 import { NewQuotePage } from './pages/NewQuotePage';
 import { QuoteDetailPage } from './pages/QuoteDetailPage';
 import { ProfilePage } from './pages/ProfilePage';
+import { LandingPage } from './pages/LandingPage';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<any>(null);
@@ -28,8 +29,8 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
-  if (loading) return <div style={{ padding: 40 }}>Carregando...</div>;
-  if (!session) return <Navigate to="/" replace />;
+  if (loading) return <div style={{ padding: 40, color: 'var(--t1)', background: 'var(--bg)', minHeight: '100vh' }}>Carregando...</div>;
+  if (!session) return <Navigate to="/login" replace />;
 
   return <>{children}</>;
 }
@@ -38,7 +39,8 @@ export default function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<LoginPage />} />
         
         <Route element={<ProtectedRoute><Layout /></ProtectedRoute>}>
           <Route path="/dashboard" element={<DashboardPage />} />

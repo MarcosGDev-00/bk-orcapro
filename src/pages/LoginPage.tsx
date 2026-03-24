@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { Check, FileText } from 'lucide-react';
+import { Check, FileText, ArrowLeft } from 'lucide-react';
 
 export function LoginPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -147,6 +147,9 @@ export function LoginPage() {
           position: 'relative'
         }}>
           <div style={{ marginBottom: 40 }}>
+            <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'var(--t3)', textDecoration: 'none', marginBottom: 20, fontWeight: 600 }}>
+              <ArrowLeft size={14} /> Voltar ao Início
+            </Link>
             <h2 className="font-heading" style={{ fontSize: 32, fontWeight: 800, color: 'var(--t1)', marginBottom: 12, letterSpacing: '-1px' }}>
               {isLogin ? 'Bem-vindo' : 'Comece agora'}
             </h2>
