@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { Check, FileText, ArrowLeft, Sun, Moon } from 'lucide-react';
+import { Check, FileText, ArrowLeft, Sun, Moon, Eye, EyeOff } from 'lucide-react';
 
 export function LoginPage() {
   const [isLogin, setIsLogin] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
   const [isDark, setIsDark] = useState(() => {
     const saved = localStorage.getItem('aura-theme');
     return saved ? saved === 'dark' : false;
@@ -222,14 +223,35 @@ export function LoginPage() {
                 <label style={{ display: 'block', fontSize: 11, fontWeight: 700, color: 'var(--t3)', textTransform: 'uppercase', letterSpacing: '1px' }}>Senha de Acesso</label>
                 {isLogin && <button type="button" style={{ fontSize: 11, background: 'none', border: 'none', color: 'var(--accent)', fontWeight: 700, cursor: 'pointer' }}>Esqueceu?</button>}
               </div>
-              <input 
-                type="password" 
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                required
-                className="glow-hover"
-                style={{ width:'100%', padding:'16px 20px', background:'var(--t4)', border:'1px solid var(--surface-border)', borderRadius:'16px', fontSize:14, color:'var(--t1)', fontFamily:"'Inter',sans-serif", outline:'none' }}
-              />
+              <div style={{ position: 'relative' }}>
+                <input 
+                  type={showPassword ? "text" : "password"} 
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  required
+                  className="glow-hover"
+                  style={{ width:'100%', padding:'16px 50px 16px 20px', background:'var(--t4)', border:'1px solid var(--surface-border)', borderRadius:'16px', fontSize:14, color:'var(--t1)', fontFamily:"'Inter',sans-serif", outline:'none' }}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  style={{
+                    position: 'absolute',
+                    right: 16,
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    background: 'none',
+                    border: 'none',
+                    color: 'var(--t3)',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    padding: 4
+                  }}
+                >
+                  {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                </button>
+              </div>
             </div>
 
             <button 

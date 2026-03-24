@@ -3,7 +3,7 @@ import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { 
   FileText, Users, Package, LayoutDashboard, Settings2, 
-  LogOut, ChevronRight, ChevronLeft 
+  LogOut, ChevronRight, ChevronLeft, CreditCard 
 } from 'lucide-react';
 
 export function Layout() {
@@ -67,6 +67,7 @@ export function Layout() {
     { group: 'CONTA', items: [
       { icon: LayoutDashboard, label: 'Dashboard', path: '/dashboard' },
       { icon: Settings2, label: 'Meu Perfil', path: '/perfil' },
+      { icon: CreditCard, label: 'Planos & Assinatura', path: '/assinatura' },
     ]}
   ];
 
@@ -269,7 +270,13 @@ export function Layout() {
           justifyContent: 'space-between',
           padding: window.innerWidth <= 768 ? '0 20px' : '0 32px',
           flexShrink: 0,
-          zIndex: 10
+          zIndex: 100,
+          position: 'sticky',
+          top: 0,
+          background: 'var(--surface)',
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          borderBottom: '1px solid var(--surface-border)'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
             <button 
@@ -322,7 +329,12 @@ export function Layout() {
           </div>
         </header>
 
-        <div className="animate-fade-in" style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden', padding: window.innerWidth <= 768 ? '16px' : '0 32px 32px 32px' }}>
+        <div key={location.pathname} className="animate-fade-in" style={{ 
+          flex: 1, 
+          overflowY: 'auto', 
+          overflowX: 'hidden', 
+          padding: window.innerWidth <= 768 ? '16px' : '32px' 
+        }}>
           <Outlet />
         </div>
       </main>

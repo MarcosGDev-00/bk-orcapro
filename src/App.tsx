@@ -11,10 +11,13 @@ import { NewQuotePage } from './pages/NewQuotePage';
 import { QuoteDetailPage } from './pages/QuoteDetailPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { LandingPage } from './pages/LandingPage';
+import { SubscriptionPage } from './pages/SubscriptionPage';
+import { useLocation } from 'react-router-dom';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const location = useLocation();
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -31,6 +34,25 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
   if (loading) return <div style={{ padding: 40, color: 'var(--t1)', background: 'var(--bg)', minHeight: '100vh' }}>Carregando...</div>;
   if (!session) return <Navigate to="/login" replace />;
+
+  // Admin Check
+  const isAdmin = session.user.email === 'marcosgabriel20061216@gmail.com';
+  
+  if (!isAdmin) {
+    const createdAt = new Date(session.user.created_at).getTime();
+    const now = new Date().getTime();
+    const fourteenDaysInMs = 14 * 24 * 60 * 60 * 1000;
+    
+    // Check if trial expired (using a soft check for now)
+    if (now - createdAt > fourteenDaysInMs) {
+      const allowedPaths = ['/assinatura', '/perfil'];
+      const isAllowed = allowedPaths.some(path => location.pathname.startsWith(path));
+      
+      if (!isAllowed) {
+        return <Navigate to="/assinatura" replace />;
+      }
+    }
+  }
 
   return <>{children}</>;
 }
@@ -50,6 +72,7 @@ export default function App() {
           <Route path="/orcamentos/novo" element={<NewQuotePage />} />
           <Route path="/orcamentos/:id" element={<QuoteDetailPage />} />
           <Route path="/perfil" element={<ProfilePage />} />
+          <Route path="/assinatura" element={<SubscriptionPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
