@@ -271,9 +271,11 @@ export function Layout() {
           padding: window.innerWidth <= 768 ? '0 20px' : '0 32px',
           flexShrink: 0,
           zIndex: 100,
-          position: 'sticky',
+          position: 'absolute',
           top: 0,
-          background: 'var(--surface)',
+          left: 0,
+          right: 0,
+          background: 'rgba(var(--bg-rgb), 0.7)',
           backdropFilter: 'blur(12px)',
           WebkitBackdropFilter: 'blur(12px)',
           borderBottom: '1px solid var(--surface-border)'
@@ -333,7 +335,7 @@ export function Layout() {
           flex: 1, 
           overflowY: 'auto', 
           overflowX: 'hidden', 
-          padding: window.innerWidth <= 768 ? '16px' : '32px' 
+          padding: window.innerWidth <= 768 ? '96px 16px 16px' : '112px 32px 32px' 
         }}>
           <Outlet />
         </div>

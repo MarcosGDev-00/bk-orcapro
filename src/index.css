@@ -4,6 +4,7 @@
 :root {
   /* Aura Light - Snow Glass (Default) */
   --bg: #fdfdfd;
+  --bg-rgb: 253, 253, 253;
   --surface: rgba(255, 255, 255, 0.85);
   --surface-border: rgba(0, 0, 0, 0.12);
   --accent: #4f46e5;
@@ -28,6 +29,7 @@
 .dark-theme {
   /* Aura Dark - Midnight Obsidian */
   --bg: #020617;
+  --bg-rgb: 2, 6, 23;
   --surface: rgba(15, 23, 42, 0.7);
   --surface-border: rgba(255, 255, 255, 0.08);
   --accent: #6366f1;

@@ -29,9 +29,11 @@ export function LandingPage() {
     <div className="animate-fade-in" style={{ background: 'var(--bg)', minHeight: '100vh', overflowX: 'hidden', color: 'var(--t1)' }}>
       {/* SEÇÃO 1 — NAVBAR */}
       <nav style={{ 
-        position: 'fixed', top: 0, width: '100%', zIndex: 1000, padding: '20px 40px', 
+        position: 'fixed', top: 0, width: '100%', zIndex: 1000, padding: '16px 40px', 
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        backdropFilter: 'blur(10px)', background: 'rgba(255,255,255,0.02)', borderBottom: '1px solid var(--surface-border)'
+        backdropFilter: 'blur(16px)', WebkitBackdropFilter: 'blur(16px)',
+        background: 'rgba(var(--bg-rgb), 0.8)', borderBottom: '1px solid var(--surface-border)',
+        boxShadow: '0 4px 30px rgba(0,0,0,0.05)'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <div style={{ width: 32, height: 32, borderRadius: '10px', background: 'var(--accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 5px 15px var(--accent-glow)' }}>
