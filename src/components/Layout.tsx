@@ -14,13 +14,32 @@ export function Layout() {
   });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [email, setEmail] = useState('');
+  const [userName, setUserName] = useState('');
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => {
-      if (data.user) setEmail(data.user.email || '');
-    });
+    async function fetchUserData() {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        setEmail(user.email || '');
+        const { data } = await supabase.from('profiles').select('full_name, company_name').eq('id', user.id).single();
+        if (data) {
+          setUserName(data.full_name || data.company_name || '');
+        }
+      }
+    }
+    fetchUserData();
+
+    // Listen for profile updates
+    const channel = supabase.channel('profile_updates')
+      .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, (payload) => {
+        const name = payload.new.full_name || payload.new.company_name;
+        if (name) setUserName(name);
+      })
+      .subscribe();
+
+    return () => { supabase.removeChannel(channel); };
   }, []);
 
   useEffect(() => {
@@ -298,9 +317,11 @@ export function Layout() {
             
             <div className="glass" style={{ padding: '4px 12px 4px 4px', borderRadius: '30px', display: 'flex', alignItems: 'center', gap: 10, border: '1px solid var(--surface-border)' }}>
               <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'linear-gradient(135deg, var(--accent) 0%, #a855f7 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 12, fontWeight: 700, color: '#fff' }}>
-                {email.charAt(0).toUpperCase()}
+                {(userName || email).charAt(0).toUpperCase()}
               </div>
-              <span className="desktop-only" style={{ fontSize: 13, fontWeight: 600, color: 'var(--t2)' }}>{email.split('@')[0]}</span>
+              <span className="desktop-only" style={{ fontSize: 13, fontWeight: 600, color: 'var(--t2)' }}>
+                {userName || email.split('@')[0]}
+              </span>
             </div>
           </div>
         </header>

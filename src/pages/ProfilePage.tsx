@@ -60,6 +60,7 @@ export function ProfilePage() {
           <div style={{ display: 'grid', gridTemplateColumns: window.innerWidth <= 600 ? '1fr' : '1fr 1fr', gap: 24 }}>
             {/* Render fields with specific mask handling */}
             {[
+              { key: 'full_name', label: 'Seu Nome (Aparece no topo)', full: true },
               { key: 'company_name', label: 'Nome da Empresa / Profissional', full: true },
               { key: 'document', label: 'CNPJ / CPF' },
               { key: 'phone', label: 'Telefone de Contato' },
@@ -79,6 +80,7 @@ export function ProfilePage() {
                       if (field.key === 'document') val = maskCpfCnpj(val);
                       setFormData({ ...formData, [field.key]: val });
                     }}
+                    placeholder={field.key === 'logo_url' ? 'https://exemplo.com/sua-logo.png' : ''}
                     style={{ 
                       width: '100%', 
                       padding: '14px 18px', 
@@ -93,6 +95,12 @@ export function ProfilePage() {
                     className="glow-hover"
                   />
                   
+                  {field.key === 'logo_url' && !formData.logo_url && (
+                    <div style={{ marginTop: 8, fontSize: 12, color: 'var(--t3)', display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <span style={{ opacity: 0.6 }}>💡 Insira uma URL acima para habilitar o download.</span>
+                    </div>
+                  )}
+
                   {field.key === 'logo_url' && formData.logo_url && (
                     <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', gap: 12 }}>
                       <div className="glass" style={{ width: 40, height: 40, borderRadius: '8px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff' }}>
