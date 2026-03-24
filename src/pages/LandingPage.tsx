@@ -2,11 +2,21 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { 
   FileText, Check, ArrowRight, Shield, Zap, Layout as LayoutIcon, 
-  Download, Users, Briefcase, Package, BarChart2, Send, ChevronDown 
+  Download, Users, Briefcase, Package, BarChart2, Send, ChevronDown,
+  Sun, Moon
 } from 'lucide-react';
 
 export function LandingPage() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [isDark, setIsDark] = useState(() => {
+    const saved = localStorage.getItem('aura-theme');
+    return saved ? saved === 'dark' : false;
+  });
+
+  React.useEffect(() => {
+    document.body.className = isDark ? 'dark-theme' : '';
+    localStorage.setItem('aura-theme', isDark ? 'dark' : 'light');
+  }, [isDark]);
 
   const faqItems = [
     { q: "Preciso de cartão de crédito para testar?", a: "Não. Os primeiros 14 dias são gratuitos e você não precisa cadastrar cartão. Só cobramos se você decidir continuar." },
@@ -31,6 +41,25 @@ export function LandingPage() {
         </div>
         
         <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
+          <button
+            onClick={() => setIsDark(!isDark)}
+            className="glass glow-hover"
+            style={{
+              width: 36,
+              height: 36,
+              borderRadius: '10px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              color: 'var(--t2)',
+              background: 'var(--surface)',
+              border: '1px solid var(--surface-border)',
+              outline: 'none'
+            }}
+          >
+            {isDark ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
           <Link to="/login" style={{ fontSize: 13, fontWeight: 700, color: 'var(--t2)', textDecoration: 'none' }}>Entrar</Link>
           <Link to="/login" className="glow-hover holographic-active" style={{ 
             padding: '10px 24px', borderRadius: '12px', fontSize: 13, fontWeight: 800, color: '#fff', textDecoration: 'none',

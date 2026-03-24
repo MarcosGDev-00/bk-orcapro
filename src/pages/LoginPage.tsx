@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { Check, FileText, ArrowLeft } from 'lucide-react';
+import { Check, FileText, ArrowLeft, Sun, Moon } from 'lucide-react';
 
 export function LoginPage() {
   const [isLogin, setIsLogin] = useState(true);
+  const [isDark, setIsDark] = useState(() => {
+    const saved = localStorage.getItem('aura-theme');
+    return saved ? saved === 'dark' : false;
+  });
+
+  useEffect(() => {
+    document.body.className = isDark ? 'dark-theme' : '';
+    localStorage.setItem('aura-theme', isDark ? 'dark' : 'light');
+  }, [isDark]);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -146,6 +155,29 @@ export function LoginPage() {
           border: '1px solid var(--surface-border)',
           position: 'relative'
         }}>
+          <button
+            onClick={() => setIsDark(!isDark)}
+            className="glass glow-hover"
+            style={{
+              position: 'absolute',
+              top: 24,
+              right: 24,
+              width: 36,
+              height: 36,
+              borderRadius: '10px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
+              color: 'var(--t2)',
+              background: 'var(--surface)',
+              border: '1px solid var(--surface-border)',
+              zIndex: 10,
+              outline: 'none'
+            }}
+          >
+            {isDark ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
           <div style={{ marginBottom: 40 }}>
             <Link to="/" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'var(--t3)', textDecoration: 'none', marginBottom: 20, fontWeight: 600 }}>
               <ArrowLeft size={14} /> Voltar ao Início
@@ -234,7 +266,7 @@ export function LoginPage() {
         </div>
         
         <p style={{ position: window.innerWidth <= 1000 ? 'static' : 'absolute', bottom: 32, marginTop: window.innerWidth <= 1000 ? 40 : 0, fontSize: 12, color: 'var(--t3)', fontWeight: 600 }}>
-          © 2024 BK Corp OrçaPro. Tecnologia de ponta.
+          © 2026 BK Corp OrçaPro. Tecnologia de ponta.
         </p>
       </div>
     </div>
