@@ -23,10 +23,8 @@ export function Layout() {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
         setEmail(user.email || '');
-        const { data } = await supabase.from('profiles').select('full_name, company_name').eq('id', user.id).single();
-        if (data) {
-          setUserName(data.full_name || data.company_name || '');
-        }
+        const { data } = await supabase.from('profiles').select('company_name').eq('id', user.id).single();
+        if (data?.company_name) setUserName(data.company_name);
       }
     }
     fetchUserData();
@@ -34,8 +32,7 @@ export function Layout() {
     // Listen for profile updates
     const channel = supabase.channel('profile_updates')
       .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'profiles' }, (payload) => {
-        const name = payload.new.full_name || payload.new.company_name;
-        if (name) setUserName(name);
+        if (payload.new.company_name) setUserName(payload.new.company_name);
       })
       .subscribe();
 

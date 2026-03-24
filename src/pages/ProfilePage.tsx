@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 import { maskPhone, maskCpfCnpj } from '../lib/masks';
-import { Download, ExternalLink } from 'lucide-react';
+import { Download, ExternalLink, Upload, Image as ImageIcon } from 'lucide-react';
 
 
 export function ProfilePage() {
   const [formData, setFormData] = useState<any>({});
   const [loading, setLoading] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [msg, setMsg] = useState('');
 
   useEffect(() => {
@@ -20,6 +21,41 @@ export function ProfilePage() {
     fetchProfile();
   }, []);
 
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error('Not authenticated');
+
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${user.id}-${Math.random()}.${fileExt}`;
+      const filePath = `logos/${fileName}`;
+
+      // Upload file
+      const { error: uploadError } = await supabase.storage
+        .from('public') // Fallback to public bucket if 'logos' is missing
+        .upload(filePath, file);
+
+      if (uploadError) throw uploadError;
+
+      // Get public URL
+      const { data: { publicUrl } } = supabase.storage
+        .from('public')
+        .getPublicUrl(filePath);
+
+      setFormData({ ...formData, logo_url: publicUrl });
+      setMsg('Logo enviada com sucesso! Não esqueça de salvar as alterações.');
+    } catch (error: any) {
+      console.error('Error uploading:', error);
+      setMsg('Erro ao enviar a logo: ' + (error.message || 'Erro desconhecido'));
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -27,10 +63,16 @@ export function ProfilePage() {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) return;
 
-    const { error } = await supabase.from('profiles').upsert({ id: user.id, ...formData });
+    // Clean data to avoid 400 errors (remove fields that don't exist in DB)
+    const { created_at, ...updateData } = formData;
+    const { error } = await supabase.from('profiles').upsert({ id: user.id, ...updateData });
+    
     setLoading(false);
     if (!error) setMsg('Perfil salvo com sucesso!');
-    else setMsg('Erro ao salvar o perfil.');
+    else {
+      console.error(error);
+      setMsg('Erro ao salvar o perfil: ' + error.message);
+    }
   };
 
   return (
@@ -60,8 +102,7 @@ export function ProfilePage() {
           <div style={{ display: 'grid', gridTemplateColumns: window.innerWidth <= 600 ? '1fr' : '1fr 1fr', gap: 24 }}>
             {/* Render fields with specific mask handling */}
             {[
-              { key: 'full_name', label: 'Seu Nome (Aparece no topo)', full: true },
-              { key: 'company_name', label: 'Nome da Empresa / Profissional', full: true },
+              { key: 'company_name', label: 'Nome da Empresa / Profissional (aparece no topo)', full: true },
               { key: 'document', label: 'CNPJ / CPF' },
               { key: 'phone', label: 'Telefone de Contato' },
               { key: 'email', label: 'E-mail Comercial', type: 'email' },
@@ -95,65 +136,57 @@ export function ProfilePage() {
                     className="glow-hover"
                   />
                   
-                  {field.key === 'logo_url' && !formData.logo_url && (
-                    <div style={{ marginTop: 8, fontSize: 12, color: 'var(--t3)', display: 'flex', alignItems: 'center', gap: 6 }}>
-                      <span style={{ opacity: 0.6 }}>💡 Insira uma URL acima para habilitar o download.</span>
-                    </div>
-                  )}
-
-                  {field.key === 'logo_url' && formData.logo_url && (
-                    <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', gap: 12 }}>
-                      <div className="glass" style={{ width: 40, height: 40, borderRadius: '8px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff' }}>
-                        <img src={formData.logo_url} alt="Logo Preview" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+                  {field.key === 'logo_url' && (
+                    <div style={{ marginTop: 12, display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 12 }}>
+                      <div className="glass" style={{ width: 48, height: 48, borderRadius: '12px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff', border: '1px solid var(--surface-border)' }}>
+                        {formData.logo_url ? (
+                          <img src={formData.logo_url} alt="Logo" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
+                        ) : (
+                          <ImageIcon size={20} color="var(--t3)" />
+                        )}
                       </div>
+                      
                       <div style={{ display: 'flex', gap: 8 }}>
-                        <a 
-                          href={formData.logo_url} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="glass glow-hover"
-                          style={{ 
-                            display: 'flex', 
-                            alignItems: 'center', 
-                            gap: 6, 
-                            padding: '6px 12px', 
-                            borderRadius: '8px', 
-                            fontSize: 12, 
-                            color: 'var(--blue)', 
-                            textDecoration: 'none',
-                            fontWeight: 600,
-                            border: '1px solid rgba(59, 130, 246, 0.2)'
-                          }}
-                        >
-                          <ExternalLink size={14} /> Abrir
-                        </a>
-                        <button 
-                          type="button"
-                          onClick={() => {
-                            const link = document.createElement('a');
-                            link.href = formData.logo_url;
-                            link.download = 'logo_empresa';
-                            document.body.appendChild(link);
-                            link.click();
-                            document.body.removeChild(link);
-                          }}
-                          className="glass glow-hover"
-                          style={{ 
-                            display: 'flex', 
-                            alignItems: 'center', 
-                            gap: 6, 
-                            padding: '6px 12px', 
-                            borderRadius: '8px', 
-                            fontSize: 12, 
-                            color: 'var(--green)', 
-                            fontWeight: 600,
-                            border: '1px solid rgba(34, 197, 94, 0.2)',
-                            cursor: 'pointer',
-                            background: 'transparent'
-                          }}
-                        >
-                          <Download size={14} /> Baixar
-                        </button>
+                        <label className="glass glow-hover" style={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          gap: 6, 
+                          padding: '10px 16px', 
+                          borderRadius: '12px', 
+                          fontSize: 13, 
+                          color: 'var(--accent)', 
+                          fontWeight: 700,
+                          border: '1px solid var(--accent)',
+                          cursor: uploading ? 'not-allowed' : 'pointer',
+                          background: 'rgba(var(--accent-rgb), 0.05)'
+                        }}>
+                          <Upload size={16} /> 
+                          {uploading ? 'Enviando...' : 'Fazer Upload'}
+                          <input type="file" accept="image/*" onChange={handleUpload} disabled={uploading} style={{ display: 'none' }} />
+                        </label>
+
+                        {formData.logo_url && (
+                          <a 
+                            href={formData.logo_url} 
+                            download 
+                            className="glass glow-hover"
+                            style={{ 
+                              display: 'flex', 
+                              alignItems: 'center', 
+                              gap: 6, 
+                              padding: '10px 16px', 
+                              borderRadius: '12px', 
+                              fontSize: 13, 
+                              color: 'var(--green)', 
+                              fontWeight: 700,
+                              textDecoration: 'none',
+                              border: '1px solid var(--green)',
+                              background: 'rgba(34, 197, 94, 0.05)'
+                            }}
+                          >
+                            <Download size={16} /> Baixar
+                          </a>
+                        )}
                       </div>
                     </div>
                   )}
