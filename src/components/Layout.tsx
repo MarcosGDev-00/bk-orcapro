@@ -124,11 +124,16 @@ export function Layout() {
             background: 'var(--surface)',
             backdropFilter: 'blur(10px)',
             WebkitBackdropFilter: 'blur(10px)',
-            transition: 'all 0.3s'
+            transition: 'all 0.3s',
+            outline: 'none'
           }}
         >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block' }}>
-            {expanded ? <path d="M15 18l-6-6 6-6" /> : <path d="M9 18l6-6-6-6" />}
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ display: 'block' }}>
+            {expanded ? (
+              <path d="M18 10L12 16L18 22" /> // Center is 15 (optical center for pointing left)
+            ) : (
+              <path d="M14 10L20 16L14 22" /> // Center is 17 (optical center for pointing right)
+            )}
           </svg>
         </button>
 
