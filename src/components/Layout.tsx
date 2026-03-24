@@ -137,8 +137,11 @@ export function Layout() {
           </svg>
         </button>
 
-        {/* Sidebar Header - Branding Only */}
-        <div style={{ padding: '32px 24px', display: 'flex', alignItems: 'center', gap: 16, flexShrink: 0 }}>
+        {/* Sidebar Header - Branding Only (Desktop) */}
+        <div 
+          className="desktop-only" 
+          style={{ padding: '32px 24px', display: 'flex', alignItems: 'center', gap: 16, flexShrink: 0 }}
+        >
           <div style={{ 
             width: 36, 
             height: 36, 
@@ -152,7 +155,7 @@ export function Layout() {
           }}>
             <FileText size={20} color="#fff" />
           </div>
-          {(expanded || mobileMenuOpen) && (
+          {expanded && (
             <span className="font-heading" style={{ 
               fontWeight: 800, 
               fontSize: 18, 
