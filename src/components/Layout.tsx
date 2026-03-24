@@ -177,8 +177,7 @@ export function Layout() {
               fontSize: 18, 
               color: 'var(--t1)',
               whiteSpace: 'nowrap', 
-              overflow: 'hidden', 
-              textOverflow: 'ellipsis' 
+              flexShrink: 0
             }}>
               OrçaPro
             </span>
@@ -190,11 +189,11 @@ export function Layout() {
           className="mobile-only"
           style={{ padding: '32px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16, flexShrink: 0 }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-            <div style={{ width: 36, height: 36, borderRadius: '12px', background: 'linear-gradient(135deg, var(--accent) 0%, #a855f7 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'nowrap' }}>
+            <div style={{ width: 36, height: 36, borderRadius: '12px', background: 'linear-gradient(135deg, var(--accent) 0%, #a855f7 100%)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               <FileText size={20} color="#fff" />
             </div>
-            <span className="font-heading" style={{ fontWeight: 800, fontSize: 18, color: 'var(--t1)' }}>OrçaPro</span>
+            <span className="font-heading" style={{ fontWeight: 800, fontSize: 18, color: 'var(--t1)', whiteSpace: 'nowrap' }}>OrçaPro</span>
           </div>
           <button 
             onClick={() => setMobileMenuOpen(false)}

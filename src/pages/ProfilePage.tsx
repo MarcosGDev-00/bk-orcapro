@@ -32,18 +32,23 @@ export function ProfilePage() {
 
       const fileExt = file.name.split('.').pop();
       const fileName = `${user.id}-${Math.random()}.${fileExt}`;
-      const filePath = `logos/${fileName}`;
+      const filePath = `${fileName}`;
 
-      // Upload file
+      // Upload file to 'logos' bucket
       const { error: uploadError } = await supabase.storage
-        .from('public') // Fallback to public bucket if 'logos' is missing
+        .from('logos')
         .upload(filePath, file);
 
-      if (uploadError) throw uploadError;
+      if (uploadError) {
+        if (uploadError.message.includes('not found')) {
+          throw new Error('Bucket "logos" não encontrado. Crie um bucket público chamado "logos" no seu painel do Supabase.');
+        }
+        throw uploadError;
+      }
 
       // Get public URL
       const { data: { publicUrl } } = supabase.storage
-        .from('public')
+        .from('logos')
         .getPublicUrl(filePath);
 
       setFormData({ ...formData, logo_url: publicUrl });
@@ -53,6 +58,24 @@ export function ProfilePage() {
       setMsg('Erro ao enviar a logo: ' + (error.message || 'Erro desconhecido'));
     } finally {
       setUploading(false);
+    }
+  };
+
+  const handleDownloadLogo = async () => {
+    if (!formData.logo_url) return;
+    try {
+      const response = await fetch(formData.logo_url);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `logo-${formData.company_name || 'empresa'}.${formData.logo_url.split('.').pop()?.split('?')[0] || 'png'}`;
+      document.body.appendChild(link);
+      link.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(link);
+    } catch (err) {
+      setMsg('Erro ao baixar a logo. Tente abrir em uma nova aba.');
     }
   };
 
@@ -137,8 +160,8 @@ export function ProfilePage() {
                   />
                   
                   {field.key === 'logo_url' && (
-                    <div style={{ marginTop: 12, display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 12 }}>
-                      <div className="glass" style={{ width: 48, height: 48, borderRadius: '12px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff', border: '1px solid var(--surface-border)' }}>
+                    <div style={{ marginTop: 12, display: 'flex', flexWrap: 'nowrap', alignItems: 'center', gap: 12 }}>
+                      <div className="glass" style={{ width: 48, height: 48, borderRadius: '12px', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff', border: '1px solid var(--surface-border)', flexShrink: 0 }}>
                         {formData.logo_url ? (
                           <img src={formData.logo_url} alt="Logo" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} />
                         ) : (
@@ -146,7 +169,7 @@ export function ProfilePage() {
                         )}
                       </div>
                       
-                      <div style={{ display: 'flex', gap: 8 }}>
+                      <div style={{ display: 'flex', gap: 8, flexWrap: 'nowrap' }}>
                         <label className="glass glow-hover" style={{ 
                           display: 'flex', 
                           alignItems: 'center', 
@@ -158,7 +181,8 @@ export function ProfilePage() {
                           fontWeight: 700,
                           border: '1px solid var(--accent)',
                           cursor: uploading ? 'not-allowed' : 'pointer',
-                          background: 'rgba(var(--accent-rgb), 0.05)'
+                          background: 'rgba(var(--accent-rgb), 0.05)',
+                          whiteSpace: 'nowrap'
                         }}>
                           <Upload size={16} /> 
                           {uploading ? 'Enviando...' : 'Fazer Upload'}
@@ -166,9 +190,9 @@ export function ProfilePage() {
                         </label>
 
                         {formData.logo_url && (
-                          <a 
-                            href={formData.logo_url} 
-                            download 
+                          <button 
+                            type="button"
+                            onClick={handleDownloadLogo}
                             className="glass glow-hover"
                             style={{ 
                               display: 'flex', 
@@ -179,13 +203,14 @@ export function ProfilePage() {
                               fontSize: 13, 
                               color: 'var(--green)', 
                               fontWeight: 700,
-                              textDecoration: 'none',
                               border: '1px solid var(--green)',
-                              background: 'rgba(34, 197, 94, 0.05)'
+                              background: 'rgba(34, 197, 94, 0.05)',
+                              cursor: 'pointer',
+                              whiteSpace: 'nowrap'
                             }}
                           >
                             <Download size={16} /> Baixar
-                          </a>
+                          </button>
                         )}
                       </div>
                     </div>
