@@ -26,7 +26,7 @@ export function LandingPage() {
   ];
 
   return (
-    <div className="animate-fade-in" style={{ background: 'var(--bg)', minHeight: '100vh', overflowX: 'hidden', color: 'var(--t1)' }}>
+    <>
       {/* SEÇÃO 1 — NAVBAR */}
       <nav style={{ 
         position: 'fixed', top: 0, width: '100%', zIndex: 1000, padding: '16px 40px', 
@@ -72,7 +72,8 @@ export function LandingPage() {
         </div>
       </nav>
 
-      {/* SEÇÃO 2 — HERO */}
+      <div className="animate-fade-in" style={{ background: 'var(--bg)', minHeight: '100vh', overflowX: 'hidden', color: 'var(--t1)' }}>
+        {/* SEÇÃO 2 — HERO */}
       <section style={{ paddingTop: 160, paddingBottom: 100, paddingLeft: 20, paddingRight: 20 }}>
         <div style={{ maxWidth: 1100, margin: '0 auto', textAlign: 'center' }}>
           <div className="glass" style={{ display: 'inline-flex', padding: '6px 16px', borderRadius: '30px', marginBottom: 24, alignItems: 'center', gap: 8, border: '1px solid var(--accent-glow)' }}>
@@ -311,6 +312,7 @@ export function LandingPage() {
           </div>
         </div>
       </footer>
-    </div>
+      </div>
+    </>
   );
 }
