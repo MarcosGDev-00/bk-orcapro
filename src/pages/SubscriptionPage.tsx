@@ -10,9 +10,9 @@ export function SubscriptionPage() {
   const [showSuccess, setShowSuccess] = useState(false);
   const adminEmail = 'marcosgabriel20061216@gmail.com';
 
-  // URLs do Stripe (O usuário deve substituir pelos links reais)
-  const STRIPE_LINK_ESSENCIAL = "https://buy.stripe.com/test_essencial";
-  const STRIPE_LINK_PRO = "https://buy.stripe.com/test_pro";
+  // URLs do Stripe (Links Reais de Teste)
+  const STRIPE_LINK_ESSENCIAL = "https://buy.stripe.com/test_cNi28ta9j3EfanM8f17ok00";
+  const STRIPE_LINK_PRO = "https://buy.stripe.com/test_00wbJ3epzb6H8fEan97ok01";
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
