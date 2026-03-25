@@ -4,36 +4,57 @@ import { Check, Star, Shield, Zap, CreditCard, MessageSquare } from 'lucide-reac
 
 export function SubscriptionPage() {
   const [session, setSession] = useState<any>(null);
+  const [isPro, setIsPro] = useState(false);
   const [daysRemaining, setDaysRemaining] = useState<number>(0);
   const [isExpired, setIsExpired] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const adminEmail = 'marcosgabriel20061216@gmail.com';
 
+  // URLs do Stripe (O usuário deve substituir pelos links reais)
+  const STRIPE_LINK_ESSENCIAL = "https://buy.stripe.com/test_essencial";
+  const STRIPE_LINK_PRO = "https://buy.stripe.com/test_pro";
+
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('success') === 'true') setShowSuccess(true);
+
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       setSession(session);
       if (session) {
+        // Fetch real is_pro status
+        const { data } = await supabase.from('profiles').select('is_pro').eq('id', session.user.id).single();
+        if (data?.is_pro) setIsPro(true);
+
         const createdAt = new Date(session.user.created_at).getTime();
         const now = new Date().getTime();
         const fourteenDaysInMs = 14 * 24 * 60 * 60 * 1000;
         const remaining = Math.max(0, Math.ceil((fourteenDaysInMs - (now - createdAt)) / (1000 * 60 * 60 * 24)));
         setDaysRemaining(remaining);
-        setIsExpired(now - createdAt > fourteenDaysInMs && session.user.email !== adminEmail);
+        setIsExpired(now - createdAt > fourteenDaysInMs && session.user.email !== adminEmail && !data?.is_pro);
       }
     });
   }, []);
 
   const isAdmin = session?.user?.email === adminEmail;
+  const isActualPro = isPro || isAdmin;
 
   return (
     <div className="animate-fade-in" style={{ maxWidth: 1000, margin: '0 auto', paddingBottom: 40 }}>
       <header style={{ marginBottom: 48, textAlign: 'center' }}>
         <h2 className="font-heading" style={{ fontSize: 42, fontWeight: 900, marginBottom: 16 }}>Sua Assinatura</h2>
         <p style={{ fontSize: 18, color: 'var(--t3)', fontWeight: 500 }}>
-          {isAdmin 
-            ? 'Você possui acesso vitalício e ilimitado como Administrador. 👑' 
+          {isActualPro 
+            ? 'Você possui acesso vitalício e ilimitado. 👑' 
             : `Você está no período de teste gratuito. ${isExpired ? 'Seu prazo expirou.' : `Restam ${daysRemaining} dias.`}`}
         </p>
       </header>
+
+      {showSuccess && (
+        <div className="glass animate-fade-in" style={{ background: 'rgba(16, 185, 129, 0.1)', border: '1px solid var(--green)', padding: '24px', borderRadius: '24px', marginBottom: 48, textAlign: 'center' }}>
+          <p style={{ color: 'var(--green)', fontWeight: 800, fontSize: 18 }}>🎉 Pagamento processado com sucesso!</p>
+          <p style={{ color: 'var(--t2)', marginTop: 8 }}>Seu acesso Pro foi liberado. Aproveite o OrçaPro!</p>
+        </div>
+      )}
 
       {isExpired && !isAdmin && (
         <div className="glass" style={{ background: 'rgba(239, 68, 68, 0.05)', border: '1px solid var(--red)', padding: '24px', borderRadius: '24px', marginBottom: 48, textAlign: 'center' }}>
@@ -58,11 +79,12 @@ export function SubscriptionPage() {
             ))}
           </div>
           <button 
-            disabled={isAdmin}
-            className="glass"
-            style={{ width: '100%', padding: '18px', borderRadius: '16px', fontWeight: 800, color: 'var(--t1)', border: '1px solid var(--surface-border)', cursor: isAdmin ? 'not-allowed' : 'pointer' }}
+            disabled={isActualPro}
+            onClick={() => window.location.href = STRIPE_LINK_ESSENCIAL}
+            className="glass glow-hover"
+            style={{ width: '100%', padding: '18px', borderRadius: '16px', fontWeight: 800, color: 'var(--t1)', border: '1px solid var(--surface-border)', cursor: isActualPro ? 'not-allowed' : 'pointer' }}
           >
-            {isAdmin ? 'JÁ ATIVO' : 'ASSINAR AGORA'}
+            {isActualPro ? 'JÁ ATIVO' : 'ASSINAR AGORA'}
           </button>
         </div>
 
@@ -82,14 +104,15 @@ export function SubscriptionPage() {
             ))}
           </div>
           <button 
-            disabled={isAdmin}
+            disabled={isActualPro}
+            onClick={() => window.location.href = STRIPE_LINK_PRO}
             style={{ 
               width: '100%', padding: '18px', borderRadius: '16px', fontWeight: 800, color: '#fff', 
               background: 'linear-gradient(135deg, var(--accent) 0%, #a855f7 100%)', border: 'none', 
-              cursor: isAdmin ? 'not-allowed' : 'pointer', boxShadow: '0 10px 25px var(--accent-glow)' 
+              cursor: isActualPro ? 'not-allowed' : 'pointer', boxShadow: '0 10px 25px var(--accent-glow)' 
             }}
           >
-            {isAdmin ? 'JÁ ATIVO' : 'UPGRADE PARA PRO'}
+            {isActualPro ? 'JÁ ATIVO' : 'UPGRADE PARA PRO'}
           </button>
         </div>
       </div>

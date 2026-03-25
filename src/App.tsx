@@ -17,13 +17,28 @@ import { useLocation } from 'react-router-dom';
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [isPro, setIsPro] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    async function checkSession() {
+      const { data: { session } } = await supabase.auth.getSession();
       setSession(session);
+      
+      if (session) {
+        // Fetch is_pro status from profiles
+        const { data } = await supabase
+          .from('profiles')
+          .select('is_pro')
+          .eq('id', session.user.id)
+          .single();
+        
+        if (data?.is_pro) setIsPro(true);
+      }
       setLoading(false);
-    });
+    }
+    
+    checkSession();
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
@@ -43,8 +58,8 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
     const now = new Date().getTime();
     const fourteenDaysInMs = 14 * 24 * 60 * 60 * 1000;
     
-    // Check if trial expired (using a soft check for now)
-    if (now - createdAt > fourteenDaysInMs) {
+    // Block only if NOT Pro AND Trial Expired
+    if (!isPro && (now - createdAt > fourteenDaysInMs)) {
       const allowedPaths = ['/assinatura', '/perfil'];
       const isAllowed = allowedPaths.some(path => location.pathname.startsWith(path));
       
